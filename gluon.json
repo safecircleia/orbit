@@ -1,0 +1,57 @@
+{
+  "name": "Orbit",
+  "vendor": "SafeCircle",
+  "appId": "com.safecircle.orbit.desktop",
+  "binaryName": "orbit-browser",
+  "version": {
+    "product": "firefox",
+    "version": "144.0"
+  },
+  "buildOptions": {
+    "generateBranding": true
+  },
+  "addons": {},
+  "brands": {
+    "stable": {
+      "backgroundColor": "#2B2A33",
+      "brandShorterName": "Orbit",
+      "brandShortName": "Orbit Browser",
+      "brandFullName": "Orbit Browser",
+      "release": {
+        "displayVersion": "1.0.0-r",
+        "github": {
+          "repo": "safecircleia/orbit"
+        },
+        "x86": {
+          "windowsMar": "windows.mar",
+          "macosMar": "macosIntel.mar",
+          "linuxMar": "linux.mar"
+        }
+      }
+    },
+    "beta": {
+      "backgroundColor": "#2B2A33",
+      "brandShorterName": "Orbit",
+      "brandShortName": "Orbit Browser",
+      "brandFullName": "Orbit Browser Beta",
+      "release": {
+        "displayVersion": "1.0.0-b",
+        "github": {
+          "repo": "safecircleia/orbit"
+        },
+        "x86": {
+          "windowsMar": "windows.mar",
+          "macosMar": "macosIntel.mar",
+          "linuxMar": "linux.mar"
+        }
+      }
+    }
+  },
+  "license": {
+    "ignoredFiles": [
+      ".*\\.json"
+    ],
+    "licenseType": "MPL-2.0"
+  },
+  "updateHostname": "orbit-updates.safecircle.tech"
+}

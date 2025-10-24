@@ -1,0 +1,13 @@
+diff --git a/browser/themes/shared/tabbrowser/content-area.css b/browser/themes/shared/tabbrowser/content-area.css
+index e06addf1602dc26ff4e75a8db6251231690f3f80..86e2cd0194bb37fa140a2f93eccfdd61419a9aec 100644
+--- a/browser/themes/shared/tabbrowser/content-area.css
++++ b/browser/themes/shared/tabbrowser/content-area.css
+@@ -276,7 +276,7 @@
+ 
+ .dialogStack {
+   z-index: var(--browser-stack-z-index-dialog-stack);
+-  position: absolute;
++  position: fixed;
+   inset: 0;
+ 
+   /* Hide tab-modal dialogs when a window-modal one is up. */
