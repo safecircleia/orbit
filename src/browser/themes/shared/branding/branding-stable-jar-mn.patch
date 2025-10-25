@@ -1,0 +1,9 @@
+diff --git a/browser/branding/stable/content/jar.mn b/browser/branding/stable/content/jar.mn
+index 1111111..2222222 100644
+--- a/browser/branding/stable/content/jar.mn
++++ b/browser/branding/stable/content/jar.mn
+@@ -24,1 +24,3 @@
+-  content/branding/aboutDialog.css
++  content/branding/aboutDialog.css
++  # Orbit: New Tab default wallpaper
++  content/branding/orbit-newtab-bg.png

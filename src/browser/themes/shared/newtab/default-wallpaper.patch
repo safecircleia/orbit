@@ -1,0 +1,11 @@
+diff --git a/browser/extensions/newtab/css/activity-stream.css b/browser/extensions/newtab/css/activity-stream.css
+--- a/browser/extensions/newtab/css/activity-stream.css
++++ b/browser/extensions/newtab/css/activity-stream.css
+@@ -341,6 +341,6 @@ body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+-  background-image: var(--newtab-wallpaper, ""), linear-gradient(to right, var(--newtab-wallpaper-color, ""), var(--newtab-wallpaper-color, ""));
++  background-image: var(--newtab-wallpaper, url("chrome://branding/content/orbit-newtab-bg.png")), linear-gradient(to right, var(--newtab-wallpaper-color, transparent), var(--newtab-wallpaper-color, transparent));
+ }

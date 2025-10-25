@@ -1,0 +1,13 @@
+diff --git a/browser/extensions/newtab/css/activity-stream.css b/browser/extensions/newtab/css/activity-stream.css
+--- a/browser/extensions/newtab/css/activity-stream.css
++++ b/browser/extensions/newtab/css/activity-stream.css
+@@ -681,7 +681,7 @@ body {
+ .logo-and-wordmark .logo {
+   display: inline-block;
+   height: 64px;
+   width: 64px;
+-  background: image-set(url("chrome://branding/content/about-logo.png"), url("chrome://branding/content/about-logo@2x.png") 2x) no-repeat center;
++  background: url("chrome://branding/content/about-logo.svg") no-repeat center;
+   background-size: 64px;
+ }
+ .logo-and-wordmark .wordmark {
