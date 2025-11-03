@@ -245,7 +245,7 @@ jobs:
         run: |
           set -x
           dos2unix configs/windows/mozconfig
-          export SURFER_PLATFORM="win32"
+          export GLUON_PLATFORM="win32"
           export ZEN_CROSS_COMPILING=1
           if test ${{ inputs.generate-gpo }} = true; then
             export ZEN_GA_GENERATE_PROFILE=1
