@@ -50,16 +50,13 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
@@ -88,7 +85,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Load Gluon CI setup
         run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}

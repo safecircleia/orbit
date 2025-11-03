@@ -59,16 +59,13 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
@@ -90,7 +87,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip dos2unix yasm nasm build-essential libgtk2.0-dev libpython3-dev m4 uuid libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdrm-dev libdbus-glib-1-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb lld llvm --fix-missing
 

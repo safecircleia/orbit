@@ -22,16 +22,13 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup and run autopep8
         if: ${{ contains(join(github.event.commits.*.modified, ' '), '.py') || contains(join(github.event.commits.*.added, ' '), '.py') || contains(join(github.event.commits.*.removed, ' '), '.py') }}
@@ -40,7 +37,7 @@ jobs:
           autopep8 --diff scripts/ src/
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm run lint

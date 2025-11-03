@@ -139,24 +139,17 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: |
-          pnpm ci
-
-      - name: Setup Dependencies
-        run: |
-          pnpm install 
+          pnpm install --frozen-lockfile 
 
       - name: Bump version
         if: ${{ inputs.update_version && inputs.update_branch == 'stable' }}
@@ -204,20 +197,20 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Activate Gluon CLI
         run: |
@@ -248,16 +241,13 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup Git
         run: |
@@ -266,7 +256,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Load Gluon CI setup
         run: pnpm gluon ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
@@ -389,20 +379,20 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           sudo apt-get update
           sudo apt-get -y install libfuse2 desktop-file-utils appstream
 
@@ -638,26 +628,23 @@ jobs:
           repository: safecircleia/orbit-release-utils
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: |
           git pull
           sudo apt-get update
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Generate new Flatpak release
         run: |
-          npm run build-flatpak -- \
+          pnpm run build-flatpak -- \
             --version ${{ needs.build-data.outputs.version }}
 
       - name: Commit

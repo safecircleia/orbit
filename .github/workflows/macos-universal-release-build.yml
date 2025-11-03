@@ -24,16 +24,13 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -73,7 +70,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Load gluon CI setup
         run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
