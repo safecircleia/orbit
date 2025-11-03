@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@eslint/js':
+        specifier: ^9.39.0
+        version: 9.39.0
       gluon-build:
         specifier: 1.0.0-rc.5
         version: 1.0.0-rc.5
@@ -17,6 +20,10 @@ importers:
         version: https://codeload.github.com/quark-platform/gecko-types/tar.gz/4e238b774e4415cbf0ad14b79060f39dd059bd29
 
 packages:
+
+  '@eslint/js@9.39.0':
+    resolution: {integrity: sha512-BIhe0sW91JGPiaF1mOuPy5v8NflqfjIcDNpC+LbW9f609WVRX1rArrhi6Z2ymvrAry9jw+5POTj4t2t62o8Bmw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@oozcitak/dom@1.15.10':
     resolution: {integrity: sha512-0JT29/LaxVgRcGKvHmSrUTEvZ8BXvZhGl2LASRUgHqDTC1M5g1pLmVv56IYNyt3bG2CUjDkc67wnyZC14pbQrQ==}
@@ -483,6 +490,8 @@ packages:
     engines: {node: '>=12.0'}
 
 snapshots:
+
+  '@eslint/js@9.39.0': {}
 
   '@oozcitak/dom@1.15.10':
     dependencies:
