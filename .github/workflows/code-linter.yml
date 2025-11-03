@@ -22,16 +22,16 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Setup and run autopep8
         if: ${{ contains(join(github.event.commits.*.modified, ' '), '.py') || contains(join(github.event.commits.*.added, ' '), '.py') || contains(join(github.event.commits.*.removed, ' '), '.py') }}

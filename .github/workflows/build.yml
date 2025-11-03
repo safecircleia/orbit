@@ -204,16 +204,16 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Install dependencies
         run: |
@@ -248,16 +248,16 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Setup Git
         run: |
@@ -389,16 +389,16 @@ jobs:
           submodules: recursive
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Install dependencies
         run: |
@@ -638,16 +638,16 @@ jobs:
           repository: safecircleia/orbit-release-utils
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+
+      - name: Enable pnpm
+        run: |
+          npm install --global corepack@latest
+          corepack enable
+          corepack prepare pnpm@latest-10 --activate
 
       - name: Install dependencies
         run: |
@@ -657,7 +657,7 @@ jobs:
 
       - name: Generate new Flatpak release
         run: |
-          npm run build-flatpak -- \
+          pnpm run build-flatpak -- \
             --version ${{ needs.build-data.outputs.version }}
 
       - name: Commit
