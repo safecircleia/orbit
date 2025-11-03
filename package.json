@@ -7,8 +7,6 @@
   "license": "MPL-2.0",
   "private": true,
   "dependencies": {
-    "@eslint/js": "^9.39.0",
-    "globals": "^16.5.0",
     "gluon-build": "1.0.0-rc.5"
   },
   "scripts": {
@@ -27,8 +25,7 @@
     "ff-version": "gluon ff-version",
     "licenseCheck": "gluon license-check",
     "gluon": "gluon",
-    "reset": "gluon reset",
-    "lint": "npx eslint src/ && prettier . --check --cache"
+    "reset": "gluon reset"
   },
   "devDependencies": {
     "gecko-types": "github:quark-platform/gecko-types"

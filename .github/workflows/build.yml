@@ -182,11 +182,6 @@ jobs:
           commit_user_name: Orbit Browser Robot
           commit_user_email: orbit-browser-auto@users.noreply.github.com
 
-  lint:
-    uses: ./.github/workflows/code-linter.yml
-    needs: [build-data]
-    name: Lint
-
   check-release:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     needs: [build-data, lint]

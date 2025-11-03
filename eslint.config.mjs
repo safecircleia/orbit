@@ -8,6 +8,9 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
+    ignores: ['**/vendor/**', '**/tests/**'],
+  },
+  {
     files: ['**/*.{js,mjs,cjs}'],
     plugins: { js },
     extends: ['js/recommended'],
@@ -16,6 +19,5 @@ export default defineConfig([
         ...globals.browser,
       },
     },
-    ignores: ['**/vendor/**', '**/tests/**'],
   },
 ]);

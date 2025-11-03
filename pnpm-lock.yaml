@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@eslint/js':
-        specifier: ^9.39.0
-        version: 9.39.0
-      globals:
-        specifier: ^16.5.0
-        version: 16.5.0
       gluon-build:
         specifier: 1.0.0-rc.5
         version: 1.0.0-rc.5
@@ -23,10 +17,6 @@ importers:
         version: https://codeload.github.com/quark-platform/gecko-types/tar.gz/4e238b774e4415cbf0ad14b79060f39dd059bd29
 
 packages:
-
-  '@eslint/js@9.39.0':
-    resolution: {integrity: sha512-BIhe0sW91JGPiaF1mOuPy5v8NflqfjIcDNpC+LbW9f609WVRX1rArrhi6Z2ymvrAry9jw+5POTj4t2t62o8Bmw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@oozcitak/dom@1.15.10':
     resolution: {integrity: sha512-0JT29/LaxVgRcGKvHmSrUTEvZ8BXvZhGl2LASRUgHqDTC1M5g1pLmVv56IYNyt3bG2CUjDkc67wnyZC14pbQrQ==}
@@ -247,10 +237,6 @@ packages:
 
   github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
-
-  globals@16.5.0:
-    resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
-    engines: {node: '>=18'}
 
   globalyzer@0.1.0:
     resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
@@ -498,8 +484,6 @@ packages:
 
 snapshots:
 
-  '@eslint/js@9.39.0': {}
-
   '@oozcitak/dom@1.15.10':
     dependencies:
       '@oozcitak/infra': 1.0.8
@@ -687,8 +671,6 @@ snapshots:
   get-stream@6.0.1: {}
 
   github-from-package@0.0.0: {}
-
-  globals@16.5.0: {}
 
   globalyzer@0.1.0: {}
 
