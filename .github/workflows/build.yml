@@ -149,11 +149,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
-
-      - name: Setup Dependencies
-        run: |
-          pnpm install 
+          pnpm install --frozen-lockfile 
 
       - name: Bump version
         if: ${{ inputs.update_version && inputs.update_branch == 'stable' }}
@@ -214,7 +210,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Activate Gluon CLI
         run: |
@@ -260,7 +256,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Load Gluon CI setup
         run: pnpm gluon ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
@@ -396,7 +392,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           sudo apt-get update
           sudo apt-get -y install libfuse2 desktop-file-utils appstream
 
@@ -644,7 +640,7 @@ jobs:
         run: |
           git pull
           sudo apt-get update
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Generate new Flatpak release
         run: |

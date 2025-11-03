@@ -85,7 +85,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
 
       - name: Load Gluon CI setup
         run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}

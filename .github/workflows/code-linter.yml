@@ -37,7 +37,7 @@ jobs:
           autopep8 --diff scripts/ src/
 
       - name: Install dependencies
-        run: pnpm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm run lint
