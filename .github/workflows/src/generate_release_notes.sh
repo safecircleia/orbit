@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-RELEASE_NOTES_URL="https://raw.githubusercontent.com/zen-browser/www/refs/heads/main/src/release-notes/stable.json"
+RELEASE_NOTES_URL="https://raw.githubusercontent.com/safecircleia/orbit/refs/heads/main/src/release-notes/stable.json"
 
-if [ "$RELEASE_BRANCH" = "release" ]; then
+if [ "$RELEASE_BRANCH" = "stable" ]; then
   RELEASE_TYPE="Stable"
 
   echo "Fetching release notes from GitHub..."
@@ -15,18 +15,18 @@ if [ "$RELEASE_BRANCH" = "release" ]; then
   LATEST_RELEASE=$(echo "$RELEASE_NOTES_JSON" | jq -r 'last')
   EXTRA_NOTES=$(echo "$LATEST_RELEASE" | jq -r '.extra // ""')
 else
-  RELEASE_TYPE="Twilight"
+  RELEASE_TYPE="Beta"
 fi
 
 {
-  echo "# Zen ${RELEASE_TYPE} Release"
+  echo "# Orbit ${RELEASE_TYPE} Stable"
 
   if [ "$RELEASE_TYPE" = "Twilight" ]; then
     echo
     echo "> [!NOTE]"
-    echo "> You're currently in Twilight mode, this means you're downloading the latest experimental features and updates."
+    echo "> You're currently in Beta mode, this means you're downloading the latest experimental features and updates."
     echo ">"
-    echo "> If you encounter any issues, please report them on the [issues page](https://github.com/zen-browser/desktop/issues)."
+    echo "> If you encounter any issues, please report them on the [issues page](https://github.com/safecircleia/orbit/issues)."
   fi
 
   if [ "$RELEASE_TYPE" = "Stable" ]; then
