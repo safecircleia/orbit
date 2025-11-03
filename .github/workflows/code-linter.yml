@@ -27,11 +27,8 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable pnpm
-        run: |
-          npm install --global corepack@latest
-          corepack enable
-          corepack prepare pnpm@latest-10 --activate
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Setup and run autopep8
         if: ${{ contains(join(github.event.commits.*.modified, ' '), '.py') || contains(join(github.event.commits.*.added, ' '), '.py') || contains(join(github.event.commits.*.removed, ' '), '.py') }}

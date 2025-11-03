@@ -64,11 +64,8 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable pnpm
-        run: |
-          npm install --global corepack@latest
-          corepack enable
-          corepack prepare pnpm@latest-10 --activate
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
