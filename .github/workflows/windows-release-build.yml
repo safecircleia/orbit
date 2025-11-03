@@ -200,8 +200,10 @@ jobs:
           source $HOME/.cargo/env
           if test "${{ matrix.arch }}" = "aarch64"; then
             rustup target add aarch64-pc-windows-msvc
+            echo "ac_add_options --target=aarch64-pc-windows-msvc" >> configs/windows/mozconfig
           else
             rustup target add x86_64-pc-windows-msvc
+            echo "ac_add_options --target=x86_64-pc-windows-msvc" >> configs/windows/mozconfig
           fi
           cd engine/
           cargo install cargo-download --locked
