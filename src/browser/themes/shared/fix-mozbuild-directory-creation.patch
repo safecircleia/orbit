@@ -1,0 +1,17 @@
+diff --git a/python/mozbuild/mozbuild/controller/building.py b/python/mozbuild/mozbuild/controller/building.py
+index a96d8c8bec..bdf996f686 100644
+--- a/python/mozbuild/mozbuild/controller/building.py
++++ b/python/mozbuild/mozbuild/controller/building.py
+@@ -358,6 +358,12 @@ class BuildMonitor(MozbuildObject):
+                 build_resources_profile_path = self._get_state_filename(
+                     "profile_build_resources.json"
+                 )
++            
++            # Ensure the directory exists before trying to write the file
++            profile_dir = os.path.dirname(build_resources_profile_path)
++            if not os.path.exists(profile_dir):
++                os.makedirs(profile_dir, exist_ok=True)
++            
+             with open(
+                 build_resources_profile_path, "w", encoding="utf-8", newline="\n"
+             ) as fh:
