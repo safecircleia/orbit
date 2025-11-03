@@ -1,8 +1,18 @@
 diff --git a/browser/base/content/aboutDialog.xhtml b/browser/base/content/aboutDialog.xhtml
-index c649808105..5f0c939de2 100644
+index c649808105..2064fc5e7a 100644
 --- a/browser/base/content/aboutDialog.xhtml
 +++ b/browser/base/content/aboutDialog.xhtml
-@@ -120,17 +120,17 @@
+@@ -103,8 +103,7 @@
+                 <label id="releasenotes" is="text-link" hidden="true" data-l10n-id="releaseNotes-link"/>
+               </hbox>
+               <description class="text-blurb">
+-                <label id="aboutDialogHelpLink" is="text-link" data-l10n-id="aboutdialog-help-user"/>
+-                <label id="submit-feedback" is="text-link" data-l10n-id="aboutdialog-submit-feedback"/>
++                <label is="text-link" href="https://safecircle.tech/contact" data-l10n-id="aboutdialog-help-user"/>
+               </description>
+             </vbox>
+ #endif
+@@ -120,17 +119,17 @@
            <vbox id="experimental" hidden="true">
              <description class="text-blurb" id="warningDesc" data-l10n-id="warningDesc-version"></description>
              <description class="text-blurb" id="communityExperimentalDesc" data-l10n-id="community-exp">
@@ -24,7 +34,7 @@ index c649808105..5f0c939de2 100644
            </description>
          </vbox>
        </vbox>
-@@ -138,8 +138,8 @@
+@@ -138,8 +137,8 @@
      <vbox id="bottomBox">
        <hbox pack="center">
          <label is="text-link" class="bottom-link" useoriginprincipal="true" href="about:license" data-l10n-id="bottomLinks-license"/>
