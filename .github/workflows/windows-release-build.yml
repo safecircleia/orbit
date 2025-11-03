@@ -200,17 +200,17 @@ jobs:
           source $HOME/.cargo/env
           if test "${{ matrix.arch }}" = "aarch64"; then
             rustup target add aarch64-pc-windows-msvc
-            echo "ac_add_options --target=aarch64-pc-windows-msvc" >> configs/windows/mozconfig
+            echo "ac_add_options --target=aarch64-pc-windows-msvc" >> engine/mozconfig
           else
             rustup target add x86_64-pc-windows-msvc
-            echo "ac_add_options --target=x86_64-pc-windows-msvc" >> configs/windows/mozconfig
+            echo "ac_add_options --target=x86_64-pc-windows-msvc" >> engine/mozconfig
           fi
           cd engine/
           cargo install cargo-download --locked
           cargo download -x windows=0.58.0
           export CARGO_INCREMENTAL=0
-          echo "" >> ../configs/common/mozconfig
-          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-0.58.0" >> ../configs/common/mozconfig
+          echo "" >> mozconfig
+          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-0.58.0" >> mozconfig
 
       # - name: Build language packs
       #   if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
