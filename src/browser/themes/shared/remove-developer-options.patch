@@ -1,0 +1,22 @@
+diff --git a/browser/branding/beta/configure.sh b/browser/branding/beta/configure.sh
+new file mode 100644
+index 0000000000..eac656cb89
+--- /dev/null
++++ b/browser/branding/beta/configure.sh
+@@ -0,0 +1,5 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++MOZ_APP_DISPLAYNAME="Orbit Browser"
+diff --git a/browser/branding/stable/configure.sh b/browser/branding/stable/configure.sh
+new file mode 100644
+index 0000000000..eac656cb89
+--- /dev/null
++++ b/browser/branding/stable/configure.sh
+@@ -0,0 +1,5 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++MOZ_APP_DISPLAYNAME="Orbit Browser"

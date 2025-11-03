@@ -5,12 +5,12 @@
   "binaryName": "orbit-browser",
   "version": {
     "product": "firefox",
-    "version": "144.0"
+    "version": "144.0.2"
   },
   "buildOptions": {
     "generateBranding": true
   },
-  "addons": {     
+  "addons": {
     "ublock": {
       "platform": "github",
       "id": "uBlock0@raymondhill.net",
