@@ -1,26 +1,60 @@
-# Browser branding
-ac_add_options --with-ccache=sccache
-ac_add_options --without-wasm-sandboxed-libraries
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-ac_add_options --with-app-basename="Orbit"
-ac_add_options --with-app-name=${binName}
-# export MOZ_USER_DIR="Orbit"
-# export MOZ_APP_VENDOR="Orbit"
-# export MOZ_APP_BASENAME=Orbit
-# export MOZ_APP_PROFILE=${binName}
-# export MOZ_APP_DISPLAYNAME="Orbit"
-# export MOZ_MACBUNDLE_ID=com.safecircle.orbit.alpha
-# export MOZ_DISTRIBUTION_ID=com.safecircle.orbit.alpha
-# export MOZ_MACBUNDLE_NAME="Orbit.app"
-# export MOZ_APP_REMOTINGNAME=com.safecircle.orbit.alpha
+# Setting the compiler based on the existence of clang bin directory
+if test -d "$HOME/.mozbuild/clang/bin"; then
+    export CC="$HOME/.mozbuild/clang/bin/clang"
+    export CXX="$HOME/.mozbuild/clang/bin/clang++"
+else
+    export CC=clang
+    export CXX=clang++
+fi
 
-# Misc
-export MOZ_INCLUDE_SOURCE_INFO=1
-export MOZ_REQUIRE_SIGNING=
-export MOZ_SOURCE_REPO=https://github.com/safecircleia/orbit
-export MOZ_SOURCE_CHANGESET=${changeset}
+if test "$ZEN_RELEASE"; then
+    if test "$SURFER_COMPAT" = "x86_64"; then
+        ac_add_options --target=x86_64-pc-linux
+        ac_add_options --enable-eme=widevine
 
-# Enable these to enable mozilla telemetry and tracking. By default, mozilla will not build telemetry code.
-# MOZ_TELEMETRY_REPORTING=1
-# MOZ_DATA_REPORTING=1
+        # Enable Profile Guided Optimization
+        if test "$ZEN_GA_DISABLE_PGO"; then
+        export ZEN_DUMMY=1
+        else
+        export MOZ_PGO=1
+        ac_add_options MOZ_PGO=1
+        fi
 
+        # Optimization flags for SURFER_COMPAT
+        ac_add_options --enable-optimize="-O3 -w -ftree-vectorize -mfpmath=sse -mprfchw -msse3 -mcx16 -msahf"
+
+        export LDFLAGS="$LDFLAGS -Wl,-O3"
+    elif test "$SURFER_COMPAT" = "aarch64"; then
+        ac_add_options --target=aarch64-linux-gnu
+
+        ac_add_options --enable-optimize="-O3"
+
+        # override LTO settings
+        export MOZ_LTO=cross,thin
+        ac_add_options --enable-lto=cross,thin
+
+        export CFLAGS="$CFLAGS -O3"
+        export CPPFLAGS="$CPPFLAGS -O3"
+        export CXXFLAGS="$CXXFLAGS -O3"
+        export LDFLAGS="$LDFLAGS -Wl,-O3"
+    fi
+
+    # Disable DMD and ELF hacks, enable linker lld
+    ac_add_options --disable-dmd
+    ac_add_options --enable-linker=lld
+    ac_add_options --disable-elf-hack
+    ac_add_options --disable-necko-wifi
+
+    # Stripping options for release builds
+    ac_add_options --enable-install-strip
+    ac_add_options --enable-strip
+    export STRIP_FLAGS="--strip-debug --strip-unneeded"
+fi
+
+# Common options
+ac_add_options --enable-alsa
+ac_add_options --enable-pulseaudio
