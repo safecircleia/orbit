@@ -1,0 +1,22 @@
+diff --git a/engine/browser/branding/beta/configure.sh b/engine/browser/branding/beta/configure.sh
+index 0000000000..1111111111 100644
+--- a/engine/browser/branding/beta/configure.sh
++++ b/engine/browser/branding/beta/configure.sh
+@@ -2,5 +2,6 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++MOZ_APP_NAME=orbit-browser
+ MOZ_APP_DISPLAYNAME="Orbit Browser Beta"
+ 
+diff --git a/engine/browser/branding/stable/configure.sh b/engine/browser/branding/stable/configure.sh
+index 0000000000..1111111111 100644
+--- a/engine/browser/branding/stable/configure.sh
++++ b/engine/browser/branding/stable/configure.sh
+@@ -2,6 +2,7 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++MOZ_APP_NAME=orbit-browser
+ MOZ_APP_DISPLAYNAME="Orbit Browser"
+ 

@@ -43,10 +43,9 @@ if test "$ZEN_RELEASE"; then
         export LDFLAGS="$LDFLAGS -Wl,-O3"
     fi
 
-    # Disable DMD and ELF hacks, enable linker lld
+    # Disable DMD and necko-wifi, enable linker lld
     ac_add_options --disable-dmd
     ac_add_options --enable-linker=lld
-    ac_add_options --disable-elf-hack
     ac_add_options --disable-necko-wifi
 
     # Stripping options for release builds
