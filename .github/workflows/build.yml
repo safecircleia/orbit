@@ -171,7 +171,7 @@ jobs:
         shell: bash
         run: |
           echo "builddate=$(date +"%Y-%m-%d")" >> $GITHUB_OUTPUT
-          echo "version=$(pnpm gluon get version | xargs)" >> $GITHUB_OUTPUT
+          echo "version=$(pnpm --silent gluon get version | xargs)" >> $GITHUB_OUTPUT
           echo "buildtime=$(date +"%H:%M:%S")" >> $GITHUB_OUTPUT
 
       - name: Commit
@@ -214,7 +214,7 @@ jobs:
       - name: Check version
         run: |
           echo "$(pwd)"
-          CURRENT_VERSION=$(pnpm gluon get version | xargs)
+          CURRENT_VERSION=$(pnpm --silent gluon get version | xargs)
           echo "Current version: $CURRENT_VERSION"
           echo "Expected version: ${{ needs.build-data.outputs.version }}"
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
@@ -223,7 +223,7 @@ jobs:
           else
             echo ">>> Version mismatch"
             exit 1
-          figv
+          fi
 
   source:
     permissions:

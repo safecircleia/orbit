@@ -5,7 +5,8 @@
   "binaryName": "orbit-browser",
   "version": {
     "product": "firefox",
-    "version": "144.0.2"
+    "version": "144.0.2",
+    "candidate": "144.0.2"
   },
   "buildOptions": {
     "generateBranding": true
@@ -26,7 +27,7 @@
       "brandShortName": "Orbit Browser",
       "brandFullName": "Orbit Browser",
       "release": {
-        "displayVersion": "0.0.1r",
+        "displayVersion": "0.0.1",
         "github": {
           "repo": "safecircleia/orbit"
         },
