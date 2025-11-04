@@ -214,14 +214,16 @@ jobs:
       - name: Check version
         run: |
           echo "$(pwd)"
-          echo $(pnpm gluon get version | xargs)
-          echo "version=$(pnpm gluon get version | xargs)" >> $GITHUB_OUTPUT
-          if [[ $(pnpm gluon get version | xargs) == ${{ needs.build-data.outputs.version }} ]]; then
+          CURRENT_VERSION=$(pnpm gluon get version | xargs)
+          echo "Current version: $CURRENT_VERSION"
+          echo "Expected version: ${{ needs.build-data.outputs.version }}"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          if [[ "$CURRENT_VERSION" == "${{ needs.build-data.outputs.version }}" ]]; then
             echo ">>> Version matches"
           else
             echo ">>> Version mismatch"
             exit 1
-          fi
+          figv
 
   source:
     permissions:
