@@ -1,8 +1,8 @@
 [
   {
-    "version": "1.0.0-a.1",
-    "date": "11/07/2024",
-    "extra": "This release will be the first release considered as stable. It's still in alpha, but it's the first release that we consider to be stable enough for daily use. You can start using it as your main browser right now if you are reading this!",
+    "version": "0.0.1b",
+    "date": "08/11/2025",
+    "extra": "This release will be the first beta release. It's still in development, but it's the first release that we consider to be stable enough for daily use. You can start using it as your main browser right now if you are reading this!",
     "features": [
       "Updated Firefox to version 144",
       "Other minor UI additions and improvements",
