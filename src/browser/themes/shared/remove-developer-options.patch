@@ -1,11 +1,10 @@
 diff --git a/browser/branding/beta/configure.sh b/browser/branding/beta/configure.sh
-index 0000000000..eac656cb89 100644
+index 0000000000..0000000000 100644
 --- a/browser/branding/beta/configure.sh
 +++ b/browser/branding/beta/configure.sh
-@@ -3,20 +3,5 @@
- # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+@@ -5,19 +5,3 @@
  
-+MOZ_APP_NAME=orbit-browser
+ MOZ_APP_NAME=orbit-browser
  MOZ_APP_DISPLAYNAME="Orbit Browser Beta"
 -
 -if test "$DEVELOPER_OPTIONS"; then
@@ -23,15 +22,13 @@ index 0000000000..eac656cb89 100644
 -    MOZ_IGECKOBACKCHANNEL_IID="18e2488d-310f-400f-8339-0e50b513e801"
 -  fi
 -fi
-
 diff --git a/browser/branding/stable/configure.sh b/browser/branding/stable/configure.sh
-index 0000000000..eac656cb89 100644
+index 0000000000..0000000000 100644
 --- a/browser/branding/stable/configure.sh
 +++ b/browser/branding/stable/configure.sh
-@@ -3,20 +3,5 @@
- # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+@@ -5,19 +5,3 @@
  
-+MOZ_APP_NAME=orbit-browser
+ MOZ_APP_NAME=orbit-browser
  MOZ_APP_DISPLAYNAME="Orbit Browser"
 -
 -if test "$DEVELOPER_OPTIONS"; then
@@ -49,4 +46,3 @@ index 0000000000..eac656cb89 100644
 -    MOZ_IGECKOBACKCHANNEL_IID="18e2488d-310f-400f-8339-0e50b513e801"
 -  fi
 -fi
-
