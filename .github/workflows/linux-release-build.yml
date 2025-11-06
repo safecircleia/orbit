@@ -94,7 +94,7 @@ jobs:
         run: pnpm download
 
       - name: Build (to populate branding)
-        run: pnpm build || true
+        run: yes | pnpm build || true
 
       - name: Fix Rust version
         run: |

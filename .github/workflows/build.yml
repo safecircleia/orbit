@@ -262,7 +262,7 @@ jobs:
         run: pnpm download --verbose
 
       - name: Build (to populate branding)
-        run: pnpm build || true
+        run: yes | pnpm build || true
 
       - name: Import
         run: pnpm imp --verbose

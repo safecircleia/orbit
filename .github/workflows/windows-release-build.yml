@@ -103,7 +103,7 @@ jobs:
 
       - name: Build (to populate branding)
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
-        run: pnpm build || true
+        run: yes | pnpm build || true
 
       - name: win-cross Cache
         env:
