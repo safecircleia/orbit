@@ -78,6 +78,9 @@ jobs:
       - name: Download Firefox source and dependencies
         run: pnpm download
 
+      - name: Build (to populate branding)
+        run: pnpm build || true
+
       - name: Bootstrap
         run: |
           cd engine

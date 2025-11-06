@@ -261,6 +261,9 @@ jobs:
       - name: Download Firefox source and dependencies
         run: pnpm download --verbose
 
+      - name: Build (to populate branding)
+        run: pnpm build || true
+
       - name: Import
         run: pnpm imp --verbose
 
