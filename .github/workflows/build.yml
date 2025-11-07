@@ -293,7 +293,7 @@ jobs:
       use-sccache: ${{ inputs.use-sccache }}
       build-version: ${{ needs.build-data.outputs.version }}
       generate-gpo: true
-      profile-data-path-archive: zen-windows-profile-data-and-jarlog.zip
+      profile-data-path-archive: orbit-windows-profile-data-and-jarlog.zip
       release-branch: ${{ inputs.update_branch }}
       MOZ_BUILD_DATE: ${{needs.buildid.outputs.buildids}}
 
@@ -306,7 +306,7 @@ jobs:
     needs: [windows-step-1, build-data]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
-      profile-data-path-archive: zen.win64-pgo-stage-1.zip
+      profile-data-path-archive: orbit.win64-pgo-stage-1.zip
       release-branch: ${{ inputs.update_branch }}
 
   windows-step-3:
@@ -704,7 +704,7 @@ jobs:
       - name: Update repository
         uses: actions/checkout@v4
         with:
-          path: zen-browser
+          path: orbit-browser
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Download Flatpak archive
