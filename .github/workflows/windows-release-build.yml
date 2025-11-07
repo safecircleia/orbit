@@ -101,10 +101,6 @@ jobs:
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
         run: pnpm download
 
-      - name: Build (to populate branding)
-        if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
-        run: yes | pnpm build || true
-
       - name: win-cross Cache
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5

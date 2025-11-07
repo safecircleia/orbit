@@ -93,9 +93,6 @@ jobs:
       - name: Download Firefox source and dependencies
         run: pnpm download
 
-      - name: Build (to populate branding)
-        run: yes | pnpm build || true
-
       - name: Fix Rust version
         run: |
           # Install a rust version compatible with LLVM 18

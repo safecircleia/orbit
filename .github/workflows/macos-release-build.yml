@@ -118,9 +118,6 @@ jobs:
       - name: Download Firefox source and dependencies
         run: pnpm download
 
-      - name: Build (to populate branding)
-        run: yes | pnpm build || true
-
       - name: Import
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
