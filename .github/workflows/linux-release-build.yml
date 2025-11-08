@@ -26,7 +26,7 @@ jobs:
     permissions:
       contents: write
     # aarch64 does not need full 16x
-    runs-on: ${{ (inputs.release-branch == 'stable' && matrix.arch == 'x86_64') && 'ubuntu-24.04' }}
+    runs-on: ${{ (inputs.release-branch == 'stable' && matrix.arch == 'x86_64') && 'ubuntu-latest' || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
