@@ -15,7 +15,10 @@ on:
 jobs:
   mac-build:
     name: Unify macOS (Universal)
-    runs-on: macos-26
+    runs-on: 'macos-26'
+
+    strategy:
+      fail-fast: false
 
     steps:
       - name: Checkout repository
@@ -29,17 +32,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Setup Python
         uses: actions/setup-python@v5
         # note: This will use the version defined in '.python-version' by default
 
       - name: Setup Git
         run: |
-          git config --global user.email "mauro-balades@users.noreply.github.com"
-          git config --global user.name "mauro-balades"
+          git config --global user.email "tomasps@users.noreply.github.com"
+          git config --global user.name "tomasps"
 
       - name: Install system dependencies
         run: |
@@ -70,13 +70,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
 
-      - name: Load gluon CI setup
-        run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+      - name: Load surfer CI setup
+        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
 
       - name: Download Firefox source and dependencies
-        run: pnpm download
+        run: npm run download
 
       - name: Bootstrap
         run: |
@@ -87,13 +87,13 @@ jobs:
           cd ..
 
       - name: Import
-        run: pnpm imp
+        run: npm run import
 
       - name: Populate mozconfig
         env:
           SURFER_MOZCONFIG_ONLY: true
         run: |
-          pnpm build
+          npm run build
           cd engine
           ./mach configure
 
@@ -132,7 +132,7 @@ jobs:
       - name: Find first .app folder name
         run: |
           cd engine/obj-x86_64-apple-darwin/dist
-          export APP_NAME=${{ inputs.release-branch == 'beta' && 'Orbit Beta' || 'Orbit' }}
+          export APP_NAME=${{ inputs.release-branch == 'beta' && 'Beta' || 'Orbit' }}
           echo "APP_NAME=$APP_NAME" >> $GITHUB_ENV
           echo "APP_NAME=$APP_NAME"
 
@@ -148,8 +148,8 @@ jobs:
         run: |
           cd engine
           echo "${{ secrets.macOS_CERTIFICATES_P12_For_App_BASE64 }}" > cert.txt
-          base64 --decode -i cert.txt -o zenCert.p12
-          echo "${{ secrets.macOS_CERTIFICATES_P12_PASSWORD }}" > zenpCertPassword.passwd
+          base64 --decode -i cert.txt -o orbitCert.p12
+          echo "${{ secrets.macOS_CERTIFICATES_P12_PASSWORD }}" > orbitCertPassword.passwd
 
       - name: Remove certificate sensitive information
         run: |
@@ -182,7 +182,7 @@ jobs:
         run: |
           cd engine
           # TODO: Change it to "production" once we figure out the issue with the webauth
-          ./mach macos-sign -v -r -c "release" -e "production" -a "./obj-x86_64-apple-darwin/dist/${{ env.APP_NAME }}.app" --rcodesign-p12-file zenCert.p12 --rcodesign-p12-password-file zenpCertPassword.passwd
+          ./mach macos-sign -v -r -c "release" -e "production" -a "./obj-x86_64-apple-darwin/dist/${{ env.APP_NAME }}.app" --rcodesign-p12-file orbitCert.p12 --rcodesign-p12-password-file orbitCertPassword.passwd
 
       - name: Create DMG
         run: |
@@ -238,12 +238,12 @@ jobs:
           mkdir -p ./engine/obj-x86_64-apple-darwin/dist/bin
           mv ./platform.ini ./engine/obj-x86_64-apple-darwin/dist/bin/platform.ini
           export SURFER_PLATFORM="darwin"
-          export ZEN_RELEASE=1
+          export ORBIT_RELEASE=1
           # full path to orbit-macos-host-mar
           export MAR=$(pwd)/orbit-macos-host-mar
           chmod +x $MAR
           echo "MAR=$MAR"
-          pnpm package --verbose
+          npm run package -- --verbose
           mv ./dist/output.mar ./macos.mar
 
       - name: Upload build artifact (.mar)
