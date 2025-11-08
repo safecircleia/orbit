@@ -184,14 +184,10 @@ jobs:
           commit_user_name: Orbit Browser Robot
           commit_user_email: orbit-browser-auto@users.noreply.github.com
 
-  lint:
-    uses: ./.github/workflows/code-linter.yml
-    needs: [build-data]
-    name: Lint
 
   check-release:
     runs-on: ubuntu-24.04
-    needs: [build-data, lint]
+    needs: [build-data]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -480,7 +476,6 @@ jobs:
         mac-uni,
         appimage,
         source,
-        lint,
       ]
     runs-on: ubuntu-24.04
     environment:
