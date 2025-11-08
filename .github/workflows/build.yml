@@ -126,7 +126,7 @@ jobs:
     permissions:
       contents: write
     name: Generate build data
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: buildid
     outputs:
       build_date: ${{ steps.data.outputs.builddate }}
@@ -186,7 +186,7 @@ jobs:
 
 
   check-release:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [build-data]
     steps:
       - name: Checkout repository
@@ -227,7 +227,7 @@ jobs:
   source:
     permissions:
       contents: write
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [build-data, check-release]
 
     steps:
@@ -318,13 +318,14 @@ jobs:
       release-branch: ${{ inputs.update_branch }}
       MOZ_BUILD_DATE: ${{needs.buildid.outputs.buildids}}
       use-sccache: ${{ inputs.use-sccache }}
+
   linux:
     name: Linux build
     uses: ./.github/workflows/linux-release-build.yml
     permissions:
       contents: write
     secrets: inherit
-    needs: [build-data, buildid, windows-step-1]
+    needs: [build-data, buildid]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
       release-branch: ${{ inputs.update_branch }}
@@ -337,7 +338,7 @@ jobs:
     permissions:
       contents: write
     secrets: inherit
-    needs: [build-data, buildid, windows-step-1]
+    needs: [build-data, buildid]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
       release-branch: ${{ inputs.update_branch }}
@@ -359,7 +360,7 @@ jobs:
     name: AppImage build - Linux ${{ matrix.arch }}
     permissions:
       contents: write
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [x86_64, aarch64]
@@ -603,7 +604,7 @@ jobs:
     permissions: write-all
     name: Prepare Flatpak
     needs: [release, linux, build-data]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Flatpak repository
@@ -662,7 +663,7 @@ jobs:
     permissions: write-all
     name: Release Flatpak
     needs: [prepare-flatpak, build-data]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Flatpak repository
