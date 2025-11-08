@@ -1,8 +1,8 @@
 {
-  "name": "Orbit",
+  "name": "Orbit Browser",
   "vendor": "SafeCircle",
-  "appId": "com.safecircle.orbit.desktop",
-  "binaryName": "orbit-browser",
+  "appId": "orbit",
+  "binaryName": "orbit",
   "version": {
     "product": "firefox",
     "version": "144.0.2",
@@ -27,14 +27,17 @@
       "brandShortName": "Orbit Browser",
       "brandFullName": "Orbit Browser",
       "release": {
-        "displayVersion": "0.0.1",
+        "displayVersion": "1.0.0s",
         "github": {
           "repo": "safecircleia/orbit"
         },
-        "x86": {
-          "windowsMar": "windows.mar",
-          "macosMar": "macosIntel.mar",
-          "linuxMar": "linux.mar"
+        "archives": {
+          "windows": "windows.mar",
+          "macos-aarch64": "macos-aarch64.mar",
+          "linux": "linux.mar",
+          "macos-x64": "macos-x64.mar",
+          "windows-arm64": "windows-arm64.mar",
+          "linux-aarch64": "linux-aarch64.mar"
         }
       }
     },
@@ -44,14 +47,9 @@
       "brandShortName": "Orbit Browser",
       "brandFullName": "Orbit Browser Beta",
       "release": {
-        "displayVersion": "0.0.1b",
+        "displayVersion": "0.1b",
         "github": {
           "repo": "safecircleia/orbit"
-        },
-        "x86": {
-          "windowsMar": "windows.mar",
-          "macosMar": "macosIntel.mar",
-          "linuxMar": "linux.mar"
         }
       }
     }
