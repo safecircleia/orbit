@@ -201,8 +201,8 @@ jobs:
           cargo install cargo-download --locked
           cargo download -x windows=0.58.0
           export CARGO_INCREMENTAL=0
-          echo "" >> ../configs/common/mozconfig
-          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-0.58.0" >> ../configs/common/mozconfig
+          echo "" >> ../configs/windows/mozconfig
+          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-0.58.0" >> ../configs/windows/mozconfig
 
       - name: Build language packs
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
