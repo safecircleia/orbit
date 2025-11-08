@@ -19,8 +19,8 @@ on:
         default: 'release'
         type: 'choice'
         options:
-          - 'release'
-          - 'twilight'
+          - 'stable'
+          - 'beta'
       use-sccache:
         description: 'Use sccache'
         required: true
