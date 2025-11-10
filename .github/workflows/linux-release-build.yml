@@ -151,15 +151,15 @@ jobs:
 
       - name: Rename artifacts
         run: |
-          mv dist/orbit-*.tar.xz "orbit.linux-${{ matrix.arch }}.tar.xz"
+          mv dist/orbit-browser*.tar.xz "orbit-browser.linux-${{ matrix.arch }}.tar.xz"
           mv dist/output.mar linux${{ matrix.arch == 'aarch64' && '-aarch64' || '' }}.mar
 
       - name: Upload build artifact (binary)
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: orbit.linux-${{ matrix.arch }}.tar.xz
-          path: ./orbit.linux-${{ matrix.arch }}.tar.xz
+          name: orbit-browser.linux-${{ matrix.arch }}.tar.xz
+          path: ./orbit-browser.linux-${{ matrix.arch }}.tar.xz
 
       - name: Upload build artifact (.mar)
         uses: actions/upload-artifact@v4

@@ -165,7 +165,7 @@ jobs:
         run: |
           echo "Tarballing DMG"
           set -ex
-          mv ./dist/*.dmg ./orbit-${{ matrix.arch }}-apple-darwin-dist.dmg
+          mv ./dist/*.dmg ./orbit-browser-${{ matrix.arch }}-apple-darwin-dist.dmg
           mv ./engine/obj-${{ matrix.arch }}-apple-darwin/dist/host/bin/mar ./orbit-macos-host-mar
           mv ./engine/obj-${{ matrix.arch }}-apple-darwin/dist/bin/platform.ini ./platform.ini
 
@@ -173,8 +173,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           retention-days: 1
-          name: orbit-${{ matrix.arch }}-apple-darwin-dist.dmg
-          path: ./orbit-${{ matrix.arch }}-apple-darwin-dist.dmg
+          name: orbit-browser-${{ matrix.arch }}-apple-darwin-dist.dmg
+          path: ./orbit-browser-${{ matrix.arch }}-apple-darwin-dist.dmg
 
       - name: Upload host mar
         uses: actions/upload-artifact@v4

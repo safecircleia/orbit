@@ -386,7 +386,7 @@ jobs:
       - name: Download Linux build
         uses: actions/download-artifact@v4
         with:
-          name: orbit.linux-${{ matrix.arch }}.tar.xz
+          name: orbit-browser.linux-${{ matrix.arch }}.tar.xz
 
       - name: Execute AppImage build
         run: |
@@ -543,14 +543,14 @@ jobs:
           body_path: release_notes.md
           files: |
             ./orbit.source.tar.zst/*
-            ./orbit.linux-x86_64.tar.xz/*
-            ./orbit.linux-aarch64.tar.xz/*
+            ./orbit-browser.linux-x86_64.tar.xz/*
+            ./orbit-browser.linux-aarch64.tar.xz/*
             ./orbit-x86_64.AppImage/*
             ./orbit-x86_64.AppImage.zsync/*
             ./orbit-aarch64.AppImage/*
             ./orbit-aarch64.AppImage.zsync/*
-            ./orbit.win-x86_64.zip/*
-            ./orbit.win-arm64.zip/*
+            ./orbit-browser.win-x86_64.zip/*
+            ./orbit-browser.win-arm64.zip/*
             ./linux.mar/*
             ./linux-aarch64.mar/*
             ./windows.mar/*
@@ -582,14 +582,14 @@ jobs:
           body_path: release_notes.md
           files: |
             ./orbit.source.tar.zst/*
-            ./orbit.linux-x86_64.tar.xz/*
-            ./orbit.linux-aarch64.tar.xz/*
+            ./orbit-browser.linux-x86_64.tar.xz/*
+            ./orbit-browser.linux-aarch64.tar.xz/*
             ./orbit-x86_64.AppImage/*
             ./orbit-x86_64.AppImage.zsync/*
             ./orbit-aarch64.AppImage/*
             ./orbit-aarch64.AppImage.zsync/*
-            ./.github/workflows/object/windows-x64-signed-x86_64/orbit.win-x86_64.zip
-            ./.github/workflows/object/windows-x64-signed-arm64/orbit.win-arm64.zip
+            ./.github/workflows/object/windows-x64-signed-x86_64/orbit-browser.win-x86_64.zip
+            ./.github/workflows/object/windows-x64-signed-arm64/orbit-browser.win-arm64.zip
             ./linux.mar/*
             ./linux-aarch64.mar/*
             ./.github/workflows/object/windows-x64-signed-x86_64/windows.mar
@@ -675,12 +675,12 @@ jobs:
       - name: Download Linux x86_64 build
         uses: actions/download-artifact@v4
         with:
-          name: orbit.linux-x86_64.tar.xz
+          name: orbit-browser.linux-x86_64.tar.xz
 
       - name: Download Linux aarch64 build
         uses: actions/download-artifact@v4
         with:
-          name: orbit.linux-aarch64.tar.xz
+          name: orbit-browser.linux-aarch64.tar.xz
 
       - name: Update repository
         uses: actions/checkout@v4
@@ -702,8 +702,8 @@ jobs:
           python3 ./orbit-browser/scripts/prepare-flatpak-release.py \
             --flatpak-archive archive.tar \
             --version ${{ needs.build-data.outputs.version }} \
-            --linux-archive orbit.linux-x86_64.tar.xz \
-            --linux-aarch64-archive orbit.linux-aarch64.tar.xz \
+            --linux-archive orbit-browser.linux-x86_64.tar.xz \
+            --linux-aarch64-archive orbit-browser.linux-aarch64.tar.xz \
             --output app.orbit_browser.orbit.yml \
             --template-root ./orbit-browser/build/flatpak
 
@@ -714,10 +714,8 @@ jobs:
 
       - name: Clean up
         run: |
-          rm -rf orbit-browser
-          rm -rf archive.tar
-          rm -rf orbit.linux-x86_64.tar.xz
-          rm -rf orbit.linux-aarch64.tar.xz
+          rm -rf orbit-browser.linux-x86_64.tar.xz
+          rm -rf orbit-browser.linux-aarch64.tar.xz
 
       - name: Upload Flatpak manifest
         uses: actions/upload-artifact@v4

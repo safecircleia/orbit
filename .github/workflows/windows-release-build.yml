@@ -258,7 +258,7 @@ jobs:
           export ORBIT_CROSS_COMPILING=1
           export ORBIT_RELEASE=1
           npm run package
-          mv ./dist/orbit-$(npm run --silent surfer -- get version | xargs).en-US.win64${{ matrix.arch == 'aarch64' && '-aarch64' || '' }}.zip orbit.win64.zip
+          mv ./dist/orbit-browser-$(npm run --silent surfer -- get version | xargs).en-US.win64${{ matrix.arch == 'aarch64' && '-aarch64' || '' }}.zip orbit-browser.win64.zip
           ls ./dist
           ls .
 
@@ -270,14 +270,14 @@ jobs:
         if: ${{ inputs.generate-gpo && matrix.arch == 'x86_64' }}
         run: |
           set -x
-          mv ./orbit.win64.zip ./orbit.win64-pgo-stage-1.zip
+          mv ./orbit-browser.win64.zip ./orbit-browser.win64-pgo-stage-1.zip
 
       - name: Rename artifacts
         if: ${{ !inputs.generate-gpo }}
         run: |
-          mv ./orbit.win64.zip orbit.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
+          mv ./orbit-browser.win64.zip orbit-browser.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
           mv ./dist/output.mar windows${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.mar
-          mv ./dist/orbit.installer.exe ./orbit.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
+          mv ./dist/orbit-browser.installer.exe ./orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
 
       - name: Upload artifact (PGO)
         uses: actions/upload-artifact@v4
@@ -285,7 +285,7 @@ jobs:
         with:
           retention-days: 5
           name: ${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}-${{ inputs.profile-data-path-archive }}
-          path: ./orbit.win64-pgo-stage-1.zip
+          path: ./orbit-browser.win64-pgo-stage-1.zip
 
       - name: Remove unnecessary files from obj
         if: ${{ !inputs.generate-gpo }}
@@ -315,16 +315,16 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: orbit.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
-          path: ./orbit.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
+          name: orbit-browser.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
+          path: ./orbit-browser.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
 
       - name: Upload artifact (if Beta branch, installer)
         if: ${{ inputs.release-branch == 'beta' && !inputs.generate-gpo }}
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: orbit.installer${{ matrix.arch == 'aarch64' && '-arm64' ||  '' }}.exe
-          path: ./orbit.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
+          name: orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' ||  '' }}.exe
+          path: ./orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
 
       - name: Upload artifact (if Beta branch, .mar)
         if: ${{ inputs.release-branch == 'beta' && !inputs.generate-gpo }}
