@@ -1,8 +1,8 @@
 {
   "name": "Orbit Browser",
   "vendor": "SafeCircle",
-  "appId": "orbit",
-  "binaryName": "orbit",
+  "appId": "orbit-browser",
+  "binaryName": "orbit-browser",
   "version": {
     "product": "firefox",
     "version": "144.0.2",
