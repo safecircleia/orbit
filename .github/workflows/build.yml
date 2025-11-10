@@ -16,7 +16,7 @@ on:
       update_branch:
         description: 'Update branch with new version'
         required: true
-        default: 'stable'
+        default: 'release'
         type: 'choice'
         options:
           - 'stable'
@@ -87,9 +87,9 @@ jobs:
           git branch --show-current
           branch="${{ inputs.update_branch }}"
           if [[ $branch == "beta" ]]; then
-            branch="beta"
+            branch="dev"
           elif [[ $branch == "stable" ]]; then
-            branch="main"
+            branch="stable"
           fi
           if [[ $(git branch --show-current) != $branch ]]; then
             echo ">>> Branch mismatch"
@@ -98,35 +98,35 @@ jobs:
             echo ">>> Branch matches"
           fi
 
-  start-self-host:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download aws-cli
-        if: ${{ inputs.create_release && inputs.update_branch == 'stable' }}
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install --update
+  # start-self-host:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download aws-cli
+  #       if: ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  #         unzip awscliv2.zip
+  #         sudo ./aws/install --update
 
-      - name: Start self-hosted runner
-        if: ${{ inputs.create_release && inputs.update_branch == 'stable' }}
-        run: |
-          echo "Starting self-hosted runner"
-          echo "${{ secrets.SELF_HOSTED_RUNNER_START_SCRIPT }}" | base64 -d > start.sh
-          sudo chmod +x start.sh
-          bash ./start.sh
+  #     - name: Start self-hosted runner
+  #       if: ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         echo "Starting self-hosted runner"
+  #         echo "${{ secrets.SELF_HOSTED_RUNNER_START_SCRIPT }}" | base64 -d > start.sh
+  #         sudo chmod +x start.sh
+  #         bash ./start.sh
 
-      - name: Remove self-hosted runner script
-        if: always() && ${{ inputs.create_release && inputs.update_branch == 'stable' }}
-        run: |
-          echo "Removing self-hosted runner script"
-          rm start.sh || true
+  #     - name: Remove self-hosted runner script
+  #       if: always() && ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         echo "Removing self-hosted runner script"
+  #         rm start.sh || true
 
   build-data:
     permissions:
       contents: write
     name: Generate build data
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     needs: buildid
     outputs:
       build_date: ${{ steps.data.outputs.builddate }}
@@ -140,38 +140,40 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile 
+          npm ci
+
+      - name: Setup Surfer
+        run: |
+          npm i -g @zen-browser/surfer
 
       - name: Bump version
         if: ${{ inputs.update_version && inputs.update_branch == 'stable' }}
         run: |
-          pnpm gluon set brand ${{ inputs.update_branch }}
+          npm run surfer -- ci --brand ${{ inputs.update_branch }} --bump prerelease
+
       - name: Bump version without new version
         if: ${{ !inputs.update_version || inputs.update_branch == 'beta' }}
         run: |
-          pnpm gluon ci --brand ${{ inputs.update_branch }}
+          npm run surfer -- ci --brand ${{ inputs.update_branch }}
 
       - name: Debug
         run: |
-          pnpm gluon get version
-          pnpm gluon get version | xargs
-          echo "$(pnpm gluon get version | xargs)"
+          surfer get version
+          surfer get version | xargs
+          echo "$(surfer get version | xargs)"
 
       - name: Export release date
         id: data
         shell: bash
         run: |
           echo "builddate=$(date +"%Y-%m-%d")" >> $GITHUB_OUTPUT
-          echo "version=$(pnpm gluon get version | xargs)" >> $GITHUB_OUTPUT
+          echo "version=$(surfer get version | xargs)" >> $GITHUB_OUTPUT
           echo "buildtime=$(date +"%H:%M:%S")" >> $GITHUB_OUTPUT
 
       - name: Commit
@@ -182,14 +184,10 @@ jobs:
           commit_user_name: Orbit Browser Robot
           commit_user_email: orbit-browser-auto@users.noreply.github.com
 
-  lint:
-    uses: ./.github/workflows/code-linter.yml
-    needs: [build-data]
-    name: Lint
 
   check-release:
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    needs: [build-data, lint]
+    runs-on: ubuntu-latest
+    needs: [build-data]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -198,30 +196,28 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable pnpm
-        run: |
-          npm install --global corepack@latest
-          corepack enable
-          corepack prepare pnpm@latest-10 --activate
-
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
 
-      - name: Activate Gluon CLI
+      - name: Setup Surfer
         run: |
-          pnpm gluon ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
+          npm i -g @zen-browser/surfer
+
+      - name: Activate Surfer CLI
+        run: |
+          npm run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
 
       - name: Check version
         run: |
           echo "$(pwd)"
-          echo $(pnpm gluon get version | xargs)
-          echo "version=$(pnpm gluon get version | xargs)" >> $GITHUB_OUTPUT
-          if [[ $(pnpm gluon get version | xargs) == ${{ needs.build-data.outputs.version }} ]]; then
+          echo $(npm run --silent surfer -- get version | xargs)
+          echo "version=$(npm run --silent surfer -- get version | xargs)" >> $GITHUB_OUTPUT
+          if [[ $(npm run --silent surfer -- get version | xargs) == ${{ needs.build-data.outputs.version }} ]]; then
             echo ">>> Version matches"
           else
             echo ">>> Version mismatch"
@@ -231,7 +227,7 @@ jobs:
   source:
     permissions:
       contents: write
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     needs: [build-data, check-release]
 
     steps:
@@ -242,12 +238,9 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
 
       - name: Setup Git
         run: |
@@ -256,27 +249,27 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
 
-      - name: Load Gluon CI setup
-        run: pnpm gluon ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
+      - name: Load Surfer CI setup
+        run: npm run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
 
       - name: Download Firefox source and dependencies
-        run: pnpm download --verbose
+        run: npm run download --verbose
 
       - name: Import
-        run: pnpm imp --verbose
+        run: npm run import -- --verbose
 
-      # - name: Build language packs
-      #   run: sh scripts/download-language-packs.sh
+      - name: Build language packs
+        run: sh scripts/download-language-packs.sh
 
-      # - name: Compress
-      #   run: |
-      #     tar \
-      #       --exclude='./.git' \
-      #       --use-compress-program=zstd \
-      #       -hcf orbit.source.tar.zst \
-      #       -C engine .
+      - name: Compress
+        run: |
+          tar \
+            --exclude='./.git' \
+            --use-compress-program=zstd \
+            -hcf zen.source.tar.zst \
+            -C engine .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -296,7 +289,7 @@ jobs:
       use-sccache: ${{ inputs.use-sccache }}
       build-version: ${{ needs.build-data.outputs.version }}
       generate-gpo: true
-      profile-data-path-archive: zen-windows-profile-data-and-jarlog.zip
+      profile-data-path-archive: orbit-windows-profile-data-and-jarlog.zip
       release-branch: ${{ inputs.update_branch }}
       MOZ_BUILD_DATE: ${{needs.buildid.outputs.buildids}}
 
@@ -309,7 +302,7 @@ jobs:
     needs: [windows-step-1, build-data]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
-      profile-data-path-archive: zen.win64-pgo-stage-1.zip
+      profile-data-path-archive: orbit.win64-pgo-stage-1.zip
       release-branch: ${{ inputs.update_branch }}
 
   windows-step-3:
@@ -318,7 +311,7 @@ jobs:
     permissions:
       contents: write
     secrets: inherit
-    needs: [build-data, windows-step-2, start-self-host, buildid]
+    needs: [build-data, windows-step-2, buildid]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
       generate-gpo: false
@@ -332,7 +325,7 @@ jobs:
     permissions:
       contents: write
     secrets: inherit
-    needs: [build-data, start-self-host, buildid]
+    needs: [build-data, buildid]
     with:
       build-version: ${{ needs.build-data.outputs.version }}
       release-branch: ${{ inputs.update_branch }}
@@ -367,7 +360,7 @@ jobs:
     name: AppImage build - Linux ${{ matrix.arch }}
     permissions:
       contents: write
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [x86_64, aarch64]
@@ -380,19 +373,13 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
 
-      - name: Enable pnpm
-        run: |
-          npm install --global corepack@latest
-          corepack enable
-          corepack prepare pnpm@latest-10 --activate
-
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
           sudo apt-get update
           sudo apt-get -y install libfuse2 desktop-file-utils appstream
 
@@ -411,7 +398,7 @@ jobs:
           cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/orbit.png && ln -s orbit.png build/AppDir/.DirIcon
 
           if [ "${{ inputs.update_branch }}" = "beta" ]; then
-            sed -i -e 's/Name=Orbit Browser/Name=Orbit Beta/g' build/AppDir/orbit.desktop
+            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' build/AppDir/orbit.desktop
             sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' build/AppDir/orbit.desktop
           fi
 
@@ -450,31 +437,31 @@ jobs:
           name: orbit-${{ matrix.arch }}.AppImage.zsync
           path: ./dist/orbit-${{ matrix.arch }}.AppImage.zsync
 
-  stop-self-hosted:
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    needs: [windows-step-3, linux]
-    if: always()
-    steps:
-      - name: Download aws-cli
-        if: ${{ inputs.create_release && inputs.update_branch == 'release' }}
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install --update
+  # stop-self-hosted:
+  #   runs-on: ubuntu-24.04
+  #   needs: [windows-step-3, linux]
+  #   if: always()
+  #   steps:
+  #     - name: Download aws-cli
+  #       if: ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  #         unzip awscliv2.zip
+  #         sudo ./aws/install --update
 
-      - name: Stop self-hosted runner
-        if: ${{ inputs.create_release && inputs.update_branch == 'stable' }}
-        run: |
-          echo "Stopping self-hosted runner"
-          echo "${{ secrets.SELF_HOSTED_RUNNER_STOP_SCRIPT }}" | base64 -d > stop.sh
-          sudo chmod +x stop.sh
-          bash ./stop.sh > /dev/null
+  #     - name: Stop self-hosted runner
+  #       if: ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         echo "Stopping self-hosted runner"
+  #         echo "${{ secrets.SELF_HOSTED_RUNNER_STOP_SCRIPT }}" | base64 -d > stop.sh
+  #         sudo chmod +x stop.sh
+  #         bash ./stop.sh > /dev/null
 
-      - name: Remove self-hosted runner script
-        if: always() && ${{ inputs.create_release && inputs.update_branch == 'stable' }}
-        run: |
-          echo "Removing self-hosted runner script"
-          rm stop.sh || true
+  #     - name: Remove self-hosted runner script
+  #       if: always() && ${{ inputs.create_release && inputs.update_branch == 'release' }}
+  #       run: |
+  #         echo "Removing self-hosted runner script"
+  #         rm stop.sh || true
 
   release:
     if: ${{ inputs.create_release || inputs.update_branch == 'beta' }}
@@ -489,10 +476,8 @@ jobs:
         mac-uni,
         appimage,
         source,
-        lint,
-        stop-self-hosted,
       ]
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-24.04
     environment:
       name: ${{ inputs.update_branch == 'stable' && 'Deploy-Stable' || 'Deploy-Beta' }}
 
@@ -527,7 +512,7 @@ jobs:
           cp -a ../linux_update_manifest_x86_64/.  updates/
           cp -a ../linux_update_manifest_aarch64/.  updates/
 
-          if [[ $RELEASE_BRANCH == 'stable' ]]; then
+          if [[ $RELEASE_BRANCH == 'release' ]]; then
             cp -a ../.github/workflows/object/windows-x64-signed-x86_64/update_manifest/.  updates/
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/
           else
@@ -593,7 +578,7 @@ jobs:
           prerelease: false
           fail_on_unmatched_files: false
           generate_release_notes: false
-          name: 'Stable build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }})'
+          name: 'Release build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }})'
           body_path: release_notes.md
           files: |
             ./orbit.source.tar.zst/*
@@ -619,7 +604,7 @@ jobs:
     permissions: write-all
     name: Prepare Flatpak
     needs: [release, linux, build-data]
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Flatpak repository
@@ -628,23 +613,15 @@ jobs:
           repository: safecircleia/orbit-release-utils
           token: ${{ secrets.DEPLOY_KEY }}
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Install dependencies
         run: |
           git pull
           sudo apt-get update
-          pnpm install --frozen-lockfile
+          npm ci
 
       - name: Generate new Flatpak release
         run: |
-          pnpm run build-flatpak -- \
+          npm run build-flatpak -- \
             --version ${{ needs.build-data.outputs.version }}
 
       - name: Commit
@@ -666,14 +643,14 @@ jobs:
           pwd
           ls .
           ls ..
-          mv releases.xml ./flatpak/com.safecircle.orbit.metainfo.xml
+          mv releases.xml ./flatpak/app.orbit_browser.orbit.metainfo.xml
           # output the version to the file
           echo -n ${{ needs.build-data.outputs.version }} > ./flatpak/version
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: '[release]: Update Flatpak manifest'
+          commit_message: '[stable]: Update Flatpak manifest'
           commit_user_name: Orbit Browser Robot
           commit_user_email: orbit-browser-auto@users.noreply.github.com
           repository: ./flatpak
@@ -686,13 +663,13 @@ jobs:
     permissions: write-all
     name: Release Flatpak
     needs: [prepare-flatpak, build-data]
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Flatpak repository
         uses: actions/checkout@v4
         with:
-          repository: flathub/com.safecircle.orbit
+          repository: flathub/app.orbit_browser.orbit
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Download Linux x86_64 build
@@ -708,7 +685,7 @@ jobs:
       - name: Update repository
         uses: actions/checkout@v4
         with:
-          path: zen-browser
+          path: safecircleia
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Download Flatpak archive
@@ -727,12 +704,12 @@ jobs:
             --version ${{ needs.build-data.outputs.version }} \
             --linux-archive orbit.linux-x86_64.tar.xz \
             --linux-aarch64-archive orbit.linux-aarch64.tar.xz \
-            --output com.safecircle.orbit.yml \
+            --output app.orbit_browser.orbit.yml \
             --template-root ./orbit-browser/build/flatpak
 
       - name: Commit changes
         run: |
-          git add com.safecircle.orbit.yml
+          git add app.orbit_browser.orbit.yml
           git commit -m "Update to version ${{ needs.build-data.outputs.version }}"
 
       - name: Clean up
@@ -746,8 +723,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: com.safecircle.orbit.yml
-          path: ./com.safecircle.orbit.yml
+          name: app.orbit_browser.orbit.yml
+          path: ./app.orbit_browser.orbit.yml
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7

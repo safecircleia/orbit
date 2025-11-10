@@ -19,9 +19,9 @@ else
 fi
 
 {
-  echo "# Orbit ${RELEASE_TYPE} Stable"
+  echo "# Orbit ${RELEASE_TYPE} Release"
 
-  if [ "$RELEASE_TYPE" = "Twilight" ]; then
+  if [ "$RELEASE_TYPE" = "Beta" ]; then
     echo
     echo "> [!NOTE]"
     echo "> You're currently in Beta mode, this means you're downloading the latest experimental features and updates."
@@ -47,7 +47,7 @@ fi
     if echo "$LATEST_RELEASE" | jq -e '(.fixes // []) | length > 0' > /dev/null; then
       echo
       echo "## Fixes"
-      echo "$LATEST_RELEASE" | jq -r '.fixes[] | if type=="object" then "- " + .description + " ([#" + (.issue|tostring) + "](" + "https://github.com/zen-browser/desktop/issues/" + (.issue|tostring) + "))" else "- " + . end'
+      echo "$LATEST_RELEASE" | jq -r '.fixes[] | if type=="object" then "- " + .description + " ([#" + (.issue|tostring) + "](" + "https://github.com/safecircleia/orbit/issues/" + (.issue|tostring) + "))" else "- " + . end'
     fi
 
     if echo "$LATEST_RELEASE" | jq -e '(.breakingChanges // []) | length > 0' > /dev/null; then

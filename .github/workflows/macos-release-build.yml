@@ -26,7 +26,7 @@ on:
 jobs:
   mac-build:
     name: Build macOS - ${{ matrix.arch }}
-    runs-on: macos-26
+    runs-on: ${{ matrix.arch == 'x86_64' && 'macos-15-intel' || 'macos-26' }}
 
     strategy:
       fail-fast: false
@@ -49,9 +49,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install pnpm
-        run: npm install -g pnpm
-
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
         if: ${{ inputs.use-sccache }}
@@ -71,8 +68,8 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --global user.email "mauro-balades@users.noreply.github.com"
-          git config --global user.name "mauro-balades"
+          git config --global user.email "tomasps@users.noreply.github.com"
+          git config --global user.name "tomasps"
 
       - name: Install system dependencies
         run: |
@@ -110,18 +107,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
 
-      - name: Load gluon CI setup
-        run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+      - name: Load surfer CI setup
+        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
 
       - name: Download Firefox source and dependencies
-        run: pnpm download
+        run: npm run download
 
       - name: Import
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
-        run: pnpm imp --verbose
+        run: npm run import -- --verbose
 
       - name: Bootstrap
         run: |
@@ -137,13 +134,13 @@ jobs:
 
       - name: Insert API Keys
         run: |
-          mkdir -p ~/.zen-keys
-          echo "${{ secrets.ZEN_SAFEBROWSING_API_KEY }}" > ~/.zen-keys/safebrowsing.dat
+          mkdir -p ~/.orbit-keys
+          echo "${{ secrets.ORBIT_SAFEBROWSING_API_KEY }}" > ~/.orbit-keys/safebrowsing.dat
 
-      - name: Build Zen
+      - name: Build Orbit
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
-          ZEN_RELEASE_BRANCH: ${{ inputs.release-branch }}
+          ORBIT_RELEASE_BRANCH: ${{ inputs.release-branch }}
         run: |
           export SURFER_PLATFORM="darwin"
           if [[ -n ${{ inputs.MOZ_BUILD_DATE }} ]];then
@@ -154,15 +151,15 @@ jobs:
       - name: Package
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
-          ZEN_GA_DISABLE_PGO: true
+          ORBIT_GA_DISABLE_PGO: true
         run: |
           export SURFER_PLATFORM="darwin"
-          export ZEN_RELEASE=1
-          pnpm package
+          export ORBIT_RELEASE=1
+          npm run package
 
       - name: Remove API Keys
         run: |
-          rm -rf ~/.zen-keys
+          rm -rf ~/.orbit-keys
 
       - name: Rename artifacts
         run: |

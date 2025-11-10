@@ -1,0 +1,12 @@
+diff --git a/browser/branding/beta/configure.sh b/browser/branding/beta/configure.sh
+index 744a5b3737..a996e16bec 100644
+--- a/browser/branding/beta/configure.sh
++++ b/browser/branding/beta/configure.sh
+@@ -2,6 +2,7 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++MOZ_APP_NAME=orbit-browser
+ MOZ_APP_DISPLAYNAME="Orbit Browser"
+ MOZ_MACBUNDLE_ID="orbit"
+ 

@@ -26,7 +26,7 @@ jobs:
     permissions:
       contents: write
     # aarch64 does not need full 16x
-    runs-on: ${{ (inputs.release-branch == 'stable' && matrix.arch == 'x86_64') && 'self-hosted' || 'blacksmith-8vcpu-ubuntu-2404' }}
+    runs-on: ${{ (inputs.release-branch == 'stable' && matrix.arch == 'x86_64') && 'ubuntu-latest' || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
@@ -51,12 +51,9 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: useblacksmith/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
 
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
@@ -73,8 +70,8 @@ jobs:
 
       - name: Setup Git
         run: |
-          git config --global user.email "mauro-balades@users.noreply.github.com"
-          git config --global user.name "mauro-balades"
+          git config --global user.email "tomasps@users.noreply.github.com"
+          git config --global user.name "tomasps"
 
       - name: Install system dependencies
         run: |
@@ -85,13 +82,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install --frozen-lockfile
+          npm ci
 
-      - name: Load Gluon CI setup
-        run: pnpm gluon ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+      - name: Load Surfer CI setup
+        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
 
       - name: Download Firefox source and dependencies
-        run: pnpm download
+        run: npm run download
 
       - name: Fix Rust version
         run: |
@@ -110,7 +107,7 @@ jobs:
           SURFER_COMPAT: ${{ matrix.arch }}
         run: |
           . "$HOME/.cargo/env"
-          pnpm imp
+          npm run import
 
       - name: Build language packs
         run: sh scripts/download-language-packs.sh
@@ -124,13 +121,13 @@ jobs:
 
       - name: Insert API Keys
         run: |
-          mkdir -p ~/.zen-keys
-          echo "${{ secrets.ZEN_SAFEBROWSING_API_KEY }}" > ~/.zen-keys/safebrowsing.dat
+          mkdir -p ~/.orbit-keys
+          echo "${{ secrets.ORBIT_SAFEBROWSING_API_KEY }}" > ~/.orbit-keys/safebrowsing.dat
 
       - name: Build
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
-          ZEN_RELEASE_BRANCH: ${{ inputs.release-branch }}
+          ORBIT_RELEASE_BRANCH: ${{ inputs.release-branch }}
         continue-on-error: true
         run: |
           export SURFER_PLATFORM="linux"
@@ -142,15 +139,15 @@ jobs:
       - name: Package
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
-          ZEN_GA_DISABLE_PGO: true
+          ORBIT_GA_DISABLE_PGO: true
         run: |
           export SURFER_PLATFORM="linux"
-          export ZEN_RELEASE=1
-          pnpm package
+          export ORBIT_RELEASE=1
+          npm run package
 
       - name: Remove API Keys
         run: |
-          rm -rf ~/.zen-keys
+          rm -rf ~/.orbit-keys
 
       - name: Rename artifacts
         run: |
@@ -175,5 +172,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: linux_update_manifest_${{ matrix.arch }}
+          name: orbit_update_manifest_${{ matrix.arch }}
           path: ./dist/update

@@ -5,7 +5,7 @@ permissions:
 on:
   pull_request:
     branches:
-      - main
+      - dev
 
 jobs:
   pr-test:
@@ -21,11 +21,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Install Surfer
+        run: npm i -g @zen-browser/surfer
+
       - name: Install dependencies
         run: npm ci
 
       - name: Download Firefox and dependencies
-        run: pnpm download
+        run: surfer download
 
       - name: Import patches
-        run: pnpm imp
+        run: surfer i
