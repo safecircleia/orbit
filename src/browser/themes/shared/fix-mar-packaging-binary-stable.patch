@@ -8,5 +8,5 @@ index 744a5b3737..a996e16bec 100644
  
 +MOZ_APP_NAME=orbit-browser
  MOZ_APP_DISPLAYNAME="Orbit Browser"
- MOZ_MACBUNDLE_ID="orbit"
+ MOZ_MACBUNDLE_ID="orbit-browser"
  
