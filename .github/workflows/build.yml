@@ -268,7 +268,7 @@ jobs:
           tar \
             --exclude='./.git' \
             --use-compress-program=zstd \
-            -hcf zen.source.tar.zst \
+            -hcf orbit.source.tar.zst \
             -C engine .
 
       - name: Upload artifact
