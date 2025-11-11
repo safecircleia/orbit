@@ -287,6 +287,14 @@ jobs:
           name: ${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}-${{ inputs.profile-data-path-archive }}
           path: ./orbit-browser.win64-pgo-stage-1.zip
 
+      - name: Upload artifact failover
+        uses: actions/upload-artifact@v4
+        if: ${{ inputs.generate-gpo && matrix.arch == 'x86_64' }}
+        with:
+          retention-days: 5
+          name: orbit-browser.win64-pgo-stage-1
+          path: ./orbit-browser.win64-pgo-stage-1.zip
+
       - name: Remove unnecessary files from obj
         if: ${{ !inputs.generate-gpo }}
         run: |
