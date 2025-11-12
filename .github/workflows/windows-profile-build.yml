@@ -69,7 +69,7 @@ jobs:
         run: |
           cd C:\artifact
           ls
-          Expand-Archive -Path .\orbit-browser.win64-pgo-stage-1 -DestinationPath C:\artifact
+          Expand-Archive -Path .\orbit-browser.win64-pgo-stage-1.zip -DestinationPath C:\artifact
           ls
 
       - name: Setup
