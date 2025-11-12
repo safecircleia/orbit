@@ -12,13 +12,6 @@
     "generateBranding": true
   },
   "addons": {
-    "ublock": {
-      "platform": "github",
-      "id": "uBlock0@raymondhill.net",
-      "repo": "gorhill/uBlock",
-      "version": "1.67.0",
-      "fileGlob": "uBlock0_*.firefox(.signed)?.xpi"
-    }
   },
   "brands": {
     "stable": {
