@@ -62,14 +62,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: C:\artifact
-          name: orbit-browser.win64-pgo-stage-1.zip
+          name: orbit-browser.win64-pgo-stage-1
 
       - name: Unpack artifact
         if: ${{ matrix.arch == 'x86_64' }}
         run: |
           cd C:\artifact
           ls
-          Expand-Archive -Path .\orbit-browser.win64-pgo-stage-1.zip -DestinationPath C:\artifact
+          Expand-Archive -Path .\orbit-browser.win64-pgo-stage-1 -DestinationPath C:\artifact
           ls
 
       - name: Setup
