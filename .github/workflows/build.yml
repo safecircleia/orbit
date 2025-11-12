@@ -393,6 +393,14 @@ jobs:
           set -eux
           export ARCH=${{ matrix.arch }}
           UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|desktop|latest|orbit-$ARCH.AppImage.zsync"
+          
+          # Create AppDir structure and extract tarball first
+          APPDIR=build/AppDir
+          mkdir -p $APPDIR/usr/share/icons/hicolor/128x128/apps
+          tar -xvf *.tar.* && rm -rf *.tar.*
+          mv orbit/* $APPDIR/
+          
+          # Now copy branding files
           rm build/AppDir/.DirIcon || true
           cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/usr/share/icons/hicolor/128x128/apps/orbit.png
           cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/orbit.png && ln -s orbit.png build/AppDir/.DirIcon
@@ -401,10 +409,6 @@ jobs:
             sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' build/AppDir/orbit.desktop
             sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' build/AppDir/orbit.desktop
           fi
-
-          APPDIR=build/AppDir
-          tar -xvf *.tar.* && rm -rf *.tar.*
-          mv orbit/* $APPDIR/
           wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
           wget "https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-squashfs-lite-$ARCH"
           chmod +x *.AppImage
