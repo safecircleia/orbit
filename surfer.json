@@ -11,8 +11,7 @@
   "buildOptions": {
     "generateBranding": true
   },
-  "addons": {
-  },
+  "addons": {},
   "brands": {
     "stable": {
       "backgroundColor": "#2B2A33",
