@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60">
+  <defs>
+    <style>.text{fill:context-fill #20123a;font-family:Arial,sans-serif;font-size:42px;font-weight:700;}</style>
+  </defs>
+  <text class="text" x="10" y="45">Orbit</text>
+</svg>
