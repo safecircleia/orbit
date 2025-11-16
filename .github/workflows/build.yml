@@ -392,13 +392,13 @@ jobs:
         run: |
           set -eux
           export ARCH=${{ matrix.arch }}
-          UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|desktop|latest|orbit-$ARCH.AppImage.zsync"
+          UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|desktop|latest|orbit-browser-$ARCH.AppImage.zsync"
           
           # Create AppDir structure and extract tarball first
           APPDIR=build/AppDir
           mkdir -p $APPDIR/usr/share/icons/hicolor/128x128/apps
           tar -xvf *.tar.* && rm -rf *.tar.*
-          mv orbit/* $APPDIR/
+          mv orbit-browser/* $APPDIR/
           
           # Now copy branding files
           rm build/AppDir/.DirIcon || true
