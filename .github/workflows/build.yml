@@ -406,8 +406,8 @@ jobs:
           cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/orbit.png && ln -s orbit.png build/AppDir/.DirIcon
 
           if [ "${{ inputs.update_branch }}" = "beta" ]; then
-            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' build/AppDir/orbit.desktop
-            sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' build/AppDir/orbit.desktop
+            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' build/AppDir/orbit-browser.desktop
+            sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' build/AppDir/orbit-browser.desktop
           fi
           wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
           wget "https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-squashfs-lite-$ARCH"
