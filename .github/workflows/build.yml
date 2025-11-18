@@ -399,15 +399,16 @@ jobs:
           mkdir -p $APPDIR/usr/share/icons/hicolor/128x128/apps
           tar -xvf *.tar.* && rm -rf *.tar.*
           mv orbit-browser/* $APPDIR/
+          rmdir orbit-browser
           
           # Now copy branding files
-          rm build/AppDir/.DirIcon || true
-          cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/usr/share/icons/hicolor/128x128/apps/orbit.png
-          cp configs/branding/${{ inputs.update_branch }}/logo128.png build/AppDir/orbit.png && ln -s orbit.png build/AppDir/.DirIcon
+          rm $APPDIR/.DirIcon || true
+          cp configs/branding/${{ inputs.update_branch }}/logo128.png $APPDIR/usr/share/icons/hicolor/128x128/apps/orbit.png
+          cp configs/branding/${{ inputs.update_branch }}/logo128.png $APPDIR/orbit.png && ln -s orbit.png $APPDIR/.DirIcon
 
           if [ "${{ inputs.update_branch }}" = "beta" ]; then
-            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' build/AppDir/orbit-browser.desktop
-            sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' build/AppDir/orbit-browser.desktop
+            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' $APPDIR/orbit-browser.desktop
+            sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' $APPDIR/orbit-browser.desktop
           fi
           wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
           wget "https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-squashfs-lite-$ARCH"
