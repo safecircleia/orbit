@@ -408,21 +408,21 @@ jobs:
 
           # Ensure a .desktop file exists (some builds don't include one).
           if [ ! -f "$APPDIR/orbit-browser.desktop" ]; then
-            cat > "$APPDIR/orbit-browser.desktop" <<'DESKTOP'
-            [Desktop Entry]
-            Name=Orbit Browser
-            Comment=Orbit Browser
-            Exec=orbit-browser %u
-            Terminal=false
-            Type=Application
-            Icon=orbit
-            Categories=Network;WebBrowser;
-            StartupWMClass=orbit
-            DESKTOP
+          cat > "$APPDIR/orbit-browser.desktop" <<'DESKTOP'
+          [Desktop Entry]
+          Name=Orbit Browser
+          Comment=Orbit Browser
+          Exec=orbit-browser %u
+          Terminal=false
+          Type=Application
+          Icon=orbit
+          Categories=Network;WebBrowser;
+          StartupWMClass=orbit
+          DESKTOP
           fi
 
           if [ "${{ inputs.update_branch }}" = "beta" ]; then
-            sed -i -e 's/Name=Orbit Browser Beta/Name=Orbit Browser Beta/g' $APPDIR/orbit-browser.desktop
+            sed -i -e 's/^Name=Orbit Browser$/Name=Orbit Browser Beta/' $APPDIR/orbit-browser.desktop
             sed -i -e 's/StartupWMClass=orbit/StartupWMClass=orbit-beta/g' $APPDIR/orbit-browser.desktop
           fi
           wget "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
