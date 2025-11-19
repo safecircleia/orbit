@@ -429,7 +429,17 @@ jobs:
           wget "https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-squashfs-lite-$ARCH"
           chmod +x *.AppImage
           chmod +x ./uruntime-appimage-squashfs-lite-"$ARCH"
-          chmod +x ./build/AppDir/AppRun
+          # Provide a wrapper matching the .desktop Exec name and create AppRun symlink
+          if [ ! -f ./build/AppDir/orbit-browser ]; then
+            printf '%s\n' '#!/bin/sh' \
+              'HERE="$(dirname "$(readlink -f \"$0\")")"' \
+              'exec "$HERE/orbit-browser-bin" "$@"' > ./build/AppDir/orbit-browser
+            chmod +x ./build/AppDir/orbit-browser
+          fi
+          # Some tooling expects AppRun; link it if absent
+          if [ ! -e ./build/AppDir/AppRun ]; then
+            ln -s orbit-browser ./build/AppDir/AppRun
+          fi
 
           # keep the uruntime mountpoint (massively speeds up launch time)
           sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime-appimage-squashfs-lite-"$ARCH"
