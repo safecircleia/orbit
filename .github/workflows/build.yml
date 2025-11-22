@@ -355,6 +355,29 @@ jobs:
     with:
       build-version: ${{ needs.build-data.outputs.version }}
       release-branch: ${{ inputs.update_branch }}
+  # mac:
+  #   name: macOS build (DISABLED)
+  #   uses: ./.github/workflows/macos-release-build.yml
+  #   permissions:
+  #     contents: write
+  #   secrets: inherit
+  #   needs: [build-data, buildid]
+  #   with:
+  #     build-version: ${{ needs.build-data.outputs.version }}
+  #     release-branch: ${{ inputs.update_branch }}
+  #     MOZ_BUILD_DATE: ${{needs.buildid.outputs.buildids}}
+  #     use-sccache: ${{ inputs.use-sccache }}
+
+  # mac-uni:
+  #   name: macOS build (Universal) (DISABLED)
+  #   uses: ./.github/workflows/macos-universal-release-build.yml
+  #   permissions:
+  #     contents: write
+  #   secrets: inherit
+  #   needs: [build-data, mac]
+  #   with:
+  #     build-version: ${{ needs.build-data.outputs.version }}
+  #     release-branch: ${{ inputs.update_branch }}
 
   appimage:
     name: AppImage build - Linux ${{ matrix.arch }}
@@ -493,7 +516,6 @@ jobs:
         linux,
         windows-step-3,
         check-release,
-        mac-uni,
         appimage,
         source,
       ]
@@ -531,7 +553,6 @@ jobs:
           mkdir -p updates
           cp -a ../linux_update_manifest_x86_64/.  updates/
           cp -a ../linux_update_manifest_aarch64/.  updates/
-
           if [[ $RELEASE_BRANCH == 'release' ]]; then
             cp -a ../.github/workflows/object/windows-x64-signed-x86_64/update_manifest/.  updates/
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/
@@ -539,8 +560,7 @@ jobs:
             cp -a ../windows_update_manifest_x86_64/.  updates/
             cp -a ../windows_update_manifest_arm64/.  updates/
           fi
-
-          cp -a ../macos_update_manifest/.  updates/
+          # macOS update manifest disabled (mac builds removed)
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -575,10 +595,8 @@ jobs:
             ./linux-aarch64.mar/*
             ./windows.mar/*
             ./windows-arm64.mar/*
-            ./macos.mar/*
             ./orbit.installer.exe/*
             ./orbit.installer-arm64.exe/*
-            ./orbit.macos-universal.dmg/*
           tag_name: 'beta'
           name: 'Beta build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }} at ${{ needs.build-data.outputs.build_time }})'
           draft: false
@@ -614,10 +632,8 @@ jobs:
             ./linux-aarch64.mar/*
             ./.github/workflows/object/windows-x64-signed-x86_64/windows.mar
             ./.github/workflows/object/windows-x64-signed-arm64/windows-arm64.mar
-            ./macos.mar/*
             ./.github/workflows/object/windows-x64-signed-x86_64/orbit.installer.exe
             ./.github/workflows/object/windows-x64-signed-arm64/orbit.installer-arm64.exe
-            ./orbit.macos-universal.dmg/*
 
   prepare-flatpak:
     if: ${{ inputs.create_release && inputs.update_branch == 'stable' }}
