@@ -540,8 +540,8 @@ jobs:
         run: |
           cd updates-server
           mkdir -p updates
-          cp -a ../linux_update_manifest_x86_64/.  updates/
-          cp -a ../linux_update_manifest_aarch64/.  updates/
+          cp -a ../orbit_update_manifest_x86_64/.  updates/
+          cp -a ../orbit_update_manifest_aarch64/.  updates/
           if [[ $RELEASE_BRANCH == 'release' ]]; then
             cp -a ../.github/workflows/object/windows-x64-signed-x86_64/update_manifest/.  updates/
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/
