@@ -5,13 +5,20 @@
   "binaryName": "orbit-browser",
   "version": {
     "product": "firefox",
-    "version": "145.0",
-    "candidate": "145.0"
+    "version": "153.0.1",
+    "candidate": "150.0.1"
   },
   "buildOptions": {
     "generateBranding": true
   },
-  "addons": {},
+  "addons": {
+    "ublock-origin": {
+      "platform": "amo",
+      "amoId": "ublock-origin",
+      "id": "uBlock0@raymondhill.net",
+      "version": "1.72.2"
+    }
+  },
   "brands": {
     "stable": {
       "backgroundColor": "#2B2A33",
