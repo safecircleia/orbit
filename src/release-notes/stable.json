@@ -1,0 +1,17 @@
+[
+  {
+    "version": "0.0.1b",
+    "extra": "Welcome to the first beta release of Orbit Browser by SafeCircle.\n\nOrbit is a privacy-focused browser built for families, schools, and privacy-conscious users, based on Mozilla Firefox.",
+    "features": [
+      "Privacy-first browsing built on Firefox 153",
+      "uBlock Origin bundled as a built-in extension",
+      "Custom new tab background with Orbit branding",
+      "SafeCircle branding and links"
+    ],
+    "fixes": [],
+    "breakingChanges": [],
+    "themeChanges": [],
+    "changes": [],
+    "knownIssues": ["Beta builds are experimental — some features may be unstable"]
+  }
+]

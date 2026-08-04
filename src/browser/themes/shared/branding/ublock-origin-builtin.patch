@@ -1,0 +1,821 @@
+diff --git a/browser/extensions/ublock-origin/jar.mn b/browser/extensions/ublock-origin/jar.mn
+new file mode 100644
+index 0000000000..2a09efbf8c
+--- /dev/null
++++ b/browser/extensions/ublock-origin/jar.mn
+@@ -0,0 +1,35 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++browser.jar:
++    builtin-addons/ublock-origin/manifest.json (manifest.json)
++    builtin-addons/ublock-origin/mozilla-recommendation.json (mozilla-recommendation.json)
++    builtin-addons/ublock-origin/managed_storage.json (managed_storage.json)
++    builtin-addons/ublock-origin/LICENSE.txt (LICENSE.txt)
++    builtin-addons/ublock-origin/1p-filters.html (1p-filters.html)
++    builtin-addons/ublock-origin/3p-filters.html (3p-filters.html)
++    builtin-addons/ublock-origin/about.html (about.html)
++    builtin-addons/ublock-origin/advanced-settings.html (advanced-settings.html)
++    builtin-addons/ublock-origin/asset-viewer.html (asset-viewer.html)
++    builtin-addons/ublock-origin/background.html (background.html)
++    builtin-addons/ublock-origin/blank.html (blank.html)
++    builtin-addons/ublock-origin/cloud-ui.html (cloud-ui.html)
++    builtin-addons/ublock-origin/code-viewer.html (code-viewer.html)
++    builtin-addons/ublock-origin/dashboard.html (dashboard.html)
++    builtin-addons/ublock-origin/devtools.html (devtools.html)
++    builtin-addons/ublock-origin/document-blocked.html (document-blocked.html)
++    builtin-addons/ublock-origin/dyna-rules.html (dyna-rules.html)
++    builtin-addons/ublock-origin/logger-ui.html (logger-ui.html)
++    builtin-addons/ublock-origin/no-dashboard.html (no-dashboard.html)
++    builtin-addons/ublock-origin/popup-fenix.html (popup-fenix.html)
++    builtin-addons/ublock-origin/settings.html (settings.html)
++    builtin-addons/ublock-origin/support.html (support.html)
++    builtin-addons/ublock-origin/whitelist.html (whitelist.html)
++    builtin-addons/ublock-origin/assets/ (assets/**)
++    builtin-addons/ublock-origin/css/ (css/**)
++    builtin-addons/ublock-origin/img/ (img/**)
++    builtin-addons/ublock-origin/js/ (js/**)
++    builtin-addons/ublock-origin/lib/ (lib/**)
++    builtin-addons/ublock-origin/_locales/ (_locales/**)
++    builtin-addons/ublock-origin/web_accessible_resources/ (web_accessible_resources/**)
+diff --git a/browser/extensions/ublock-origin/moz.build b/browser/extensions/ublock-origin/moz.build
+index 19b7386eb2..2003c81e9e 100644
+--- a/browser/extensions/ublock-origin/moz.build
++++ b/browser/extensions/ublock-origin/moz.build
+@@ -2,774 +2,4 @@
+ DEFINES["MOZ_APP_VERSION"] = CONFIG["MOZ_APP_VERSION"]
+ DEFINES["MOZ_APP_MAXVERSION"] = CONFIG["MOZ_APP_MAXVERSION"]
+ 
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["1p-filters.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["3p-filters.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["LICENSE.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["about.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["advanced-settings.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["asset-viewer.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["background.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["blank.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["cloud-ui.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["code-viewer.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["dashboard.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["devtools.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["document-blocked.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["dyna-rules.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["logger-ui.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["managed_storage.json"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["manifest.json"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["mozilla-recommendation.json"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["no-dashboard.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["popup-fenix.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["settings.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["support.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"] += ["whitelist.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["META-INF"] += ["META-INF/cose.manifest"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["META-INF"] += ["META-INF/cose.sig"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["META-INF"] += ["META-INF/manifest.mf"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["META-INF"] += ["META-INF/mozilla.rsa"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["META-INF"] += ["META-INF/mozilla.sf"]
+-
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ar"] += ["_locales/ar/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["az"] += ["_locales/az/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["be"] += ["_locales/be/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["bg"] += ["_locales/bg/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["bn"] += ["_locales/bn/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["br_FR"] += ["_locales/br_FR/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["bs"] += ["_locales/bs/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ca"] += ["_locales/ca/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["cs"] += ["_locales/cs/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["cv"] += ["_locales/cv/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["cy"] += ["_locales/cy/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["da"] += ["_locales/da/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["de"] += ["_locales/de/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["el"] += ["_locales/el/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["en"] += ["_locales/en/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["en_GB"] += ["_locales/en_GB/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["eo"] += ["_locales/eo/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["es"] += ["_locales/es/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["et"] += ["_locales/et/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["eu"] += ["_locales/eu/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["fa"] += ["_locales/fa/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["fi"] += ["_locales/fi/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["fil"] += ["_locales/fil/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["fr"] += ["_locales/fr/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["fy"] += ["_locales/fy/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["gl"] += ["_locales/gl/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["gu"] += ["_locales/gu/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["he"] += ["_locales/he/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["hi"] += ["_locales/hi/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["hr"] += ["_locales/hr/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["hu"] += ["_locales/hu/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["hy"] += ["_locales/hy/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["id"] += ["_locales/id/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["it"] += ["_locales/it/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ja"] += ["_locales/ja/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ka"] += ["_locales/ka/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["kk"] += ["_locales/kk/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["kn"] += ["_locales/kn/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ko"] += ["_locales/ko/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["lt"] += ["_locales/lt/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["lv"] += ["_locales/lv/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["mk"] += ["_locales/mk/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ml"] += ["_locales/ml/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["mr"] += ["_locales/mr/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ms"] += ["_locales/ms/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["nb"] += ["_locales/nb/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["nl"] += ["_locales/nl/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["no"] += ["_locales/no/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["oc"] += ["_locales/oc/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["pa"] += ["_locales/pa/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["pl"] += ["_locales/pl/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["pt_BR"] += ["_locales/pt_BR/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["pt_PT"] += ["_locales/pt_PT/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ro"] += ["_locales/ro/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ru"] += ["_locales/ru/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["si"] += ["_locales/si/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sk"] += ["_locales/sk/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sl"] += ["_locales/sl/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["so"] += ["_locales/so/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sq"] += ["_locales/sq/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sr"] += ["_locales/sr/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sv"] += ["_locales/sv/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["sw"] += ["_locales/sw/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ta"] += ["_locales/ta/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["te"] += ["_locales/te/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["th"] += ["_locales/th/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["tr"] += ["_locales/tr/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["uk"] += ["_locales/uk/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["ur"] += ["_locales/ur/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["vi"] += ["_locales/vi/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["zh_CN"] += ["_locales/zh_CN/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["_locales"]["zh_TW"] += ["_locales/zh_TW/messages.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"] += ["assets/assets.json"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["easylist"] += ["assets/thirdparties/easylist/easylist.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["easylist"] += ["assets/thirdparties/easylist/easyprivacy.txt"]
+-
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["pgl.yoyo.org"]["as"] += ["assets/thirdparties/pgl.yoyo.org/as/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["pgl.yoyo.org"]["as"] += ["assets/thirdparties/pgl.yoyo.org/as/serverlist"]
+-
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["publicsuffix.org"]["list"] += ["assets/thirdparties/publicsuffix.org/list/effective_tld_names.dat"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["urlhaus-filter"] += ["assets/thirdparties/urlhaus-filter/LICENSE.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["thirdparties"]["urlhaus-filter"] += ["assets/thirdparties/urlhaus-filter/urlhaus-filter-online.txt"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/badlists.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/badware.min.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/filters.min.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/privacy.min.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/quick-fixes.min.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["assets"]["ublock"] += ["assets/ublock/unbreak.min.txt"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/1p-filters.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/3p-filters.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/about.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/advanced-settings.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/asset-viewer.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/click2load.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/cloud-ui.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/code-viewer.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/codemirror.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/common.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/dashboard-common.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/dashboard.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/devtools.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/document-blocked.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/dom-inspector.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/dyna-rules.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/epicker-ui.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/fa-icons.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/logger-ui-inspector.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/logger-ui.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/popup-fenix.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/settings.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/support.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"] += ["css/whitelist.css"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Inter"] += ["css/fonts/Inter/Inter-Regular.woff2"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Inter"] += ["css/fonts/Inter/Inter-SemiBold.woff2"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Inter"] += ["css/fonts/Inter/LICENSE.txt"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Metropolis"] += ["css/fonts/Metropolis/Metropolis-Regular.woff2"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Metropolis"] += ["css/fonts/Metropolis/Metropolis-SemiBold.woff2"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Metropolis"] += ["css/fonts/Metropolis/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["fonts"]["Metropolis"] += ["css/fonts/Metropolis/UNLICENSE"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["css"]["themes"] += ["css/themes/default.css"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/cloud.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/help16.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_16-loading.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_16-off.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_16.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_32-loading.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_32-off.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_32.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_64-loading.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_64-off.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/icon_64.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/material-design.svg"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/photon.svg"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/ublock-defs.svg"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"] += ["img/ublock.svg"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/README"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ad.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ae.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/af.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ag.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ai.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/al.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/am.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ao.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/aq.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ar.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/as.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/at.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/au.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/aw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ax.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/az.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ba.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bb.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bd.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/be.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bi.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bj.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bo.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bq.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/br.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bs.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/by.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/bz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ca.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cd.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ch.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ci.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ck.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/co.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cx.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cy.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/cz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/de.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/dj.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/dk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/dm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/do.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/dz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ec.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ee.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/eg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/eh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/er.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/es.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/et.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fi.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fj.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fo.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/fr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ga.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gb-eng.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gb-nir.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gb-sct.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gb-wls.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gb.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gd.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ge.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gi.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gp.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gq.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gs.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/gy.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/hk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/hm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/hn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/hr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ht.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/hu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/id.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ie.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/il.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/im.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/in.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/io.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/iq.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ir.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/is.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/it.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/je.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/jm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/jo.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/jp.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ke.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ki.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/km.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kp.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ky.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/kz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/la.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lb.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/li.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ls.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/lv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ly.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ma.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/md.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/me.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ml.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mo.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mp.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mq.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ms.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mx.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/my.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/mz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/na.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ne.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ng.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ni.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/no.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/np.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/nz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/om.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pa.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pe.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ph.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ps.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/pw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/py.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/qa.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/re.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ro.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/rs.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ru.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/rw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sa.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sb.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sd.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/se.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sh.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/si.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sj.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/so.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ss.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/st.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sx.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sy.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/sz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/td.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/th.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tj.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tl.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/to.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tr.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tv.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tw.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/tz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ua.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ug.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/um.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/us.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/uy.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/uz.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/va.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/vc.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ve.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/vg.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/vi.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/vn.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/vu.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/wf.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ws.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/xk.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/ye.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/yt.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/za.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/zm.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["flags-of-the-world"] += ["img/flags-of-the-world/zw.png"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["fontawesome"] += ["img/fontawesome/LICENSE.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["img"]["fontawesome"] += ["img/fontawesome/fontawesome-defs.svg"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/1p-filters.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/3p-filters.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/about.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/advanced-settings.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/arglist-parser.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/asset-viewer.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/assets.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/background.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/base64-custom.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/benchmarks.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/biditrie.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/broadcast.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/cachestorage.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/click2load.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/cloud-ui.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/code-viewer.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/commands.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/console.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/contentscript-extra.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/contentscript.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/contextmenu.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/cosmetic-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dashboard-common.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dashboard.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/devtools.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/diff-updater.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/document-blocked.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dom-inspector.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dom.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dyna-rules.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/dynamic-net-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/epicker-ui.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/fa-icons.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/filtering-context.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/filtering-engines.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/hnswitches.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/hntrie.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/html-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/httpheader-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/i18n.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/jsonpath.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/logger-ui-inspector.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/logger-ui.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/logger.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/lz4.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/messaging.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/mrucache.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/pagestore.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/popup-fenix.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/redirect-engine.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/redirect-resources.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/regex-analyzer.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/reverselookup-worker.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/reverselookup.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/s14e-serializer.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/scriptlet-filtering-core.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/scriptlet-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/settings.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/start.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-dnr-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-ext-filtering-db.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-ext-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-filtering-io.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-filtering-parser.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/static-net-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/storage.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/support.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/tab.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/tasks.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/text-encode.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/text-utils.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/theme.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/traffic.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/ublock.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/uri-utils.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/url-net-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/urlskip.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/utils.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/vapi-background-ext.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/vapi-background.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/vapi-client.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/vapi-common.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/vapi.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/webext.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"] += ["js/whitelist.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["codemirror"] += ["js/codemirror/search-thread.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["codemirror"] += ["js/codemirror/search.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["codemirror"] += ["js/codemirror/ubo-dynamic-filtering.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["codemirror"] += ["js/codemirror/ubo-static-filtering.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/attribute.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/base.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/cookie.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/create-html.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/href-sanitizer.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/json-edit.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/json-prune.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/localstorage.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/noeval.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/object-prune.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/parse-replace.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-addeventlistener.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-dialog.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-fetch.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-innerHTML.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-navigation.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-settimeout.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/prevent-xhr.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/proxy-apply.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/replace-argument.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/run-at.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/safe-self.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/scriptlets.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/set-constant.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/shared.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/spoof-css.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/stack-trace.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["resources"] += ["js/resources/utils.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/cosmetic-logger.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/cosmetic-off.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/cosmetic-on.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/cosmetic-report.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/dom-inspector.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/dom-survey-elements.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/dom-survey-scripts.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/epicker.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/load-3p-css.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/load-large-media-all.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/load-large-media-interactive.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/noscript-spoof.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/scriptlet-loglevel-1.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/scriptlet-loglevel-2.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/should-inject-contentscript.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/subscriber.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["scriptlets"] += ["js/scriptlets/updater.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["wasm"] += ["js/wasm/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["wasm"] += ["js/wasm/biditrie.wasm"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["wasm"] += ["js/wasm/biditrie.wat"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["wasm"] += ["js/wasm/hntrie.wasm"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["js"]["wasm"] += ["js/wasm/hntrie.wat"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"] += ["lib/punycode.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"] += ["lib/codemirror/LICENSE"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"] += ["lib/codemirror/README.md"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["comment"] += ["lib/codemirror/addon/comment/comment.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["display"] += ["lib/codemirror/addon/display/panel.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["edit"] += ["lib/codemirror/addon/edit/closebrackets.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["edit"] += ["lib/codemirror/addon/edit/matchbrackets.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["fold"] += ["lib/codemirror/addon/fold/foldcode.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["fold"] += ["lib/codemirror/addon/fold/foldgutter.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["fold"] += ["lib/codemirror/addon/fold/foldgutter.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["hint"] += ["lib/codemirror/addon/hint/show-hint.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["hint"] += ["lib/codemirror/addon/hint/show-hint.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["merge"] += ["lib/codemirror/addon/merge/merge.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["merge"] += ["lib/codemirror/addon/merge/merge.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["scroll"] += ["lib/codemirror/addon/scroll/annotatescrollbar.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["search"] += ["lib/codemirror/addon/search/matchesonscrollbar.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["search"] += ["lib/codemirror/addon/search/searchcursor.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["addon"]["selection"] += ["lib/codemirror/addon/selection/active-line.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["lib"] += ["lib/codemirror/lib/codemirror.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["lib"] += ["lib/codemirror/lib/codemirror.js"]
+-
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["mode"]["css"] += ["lib/codemirror/mode/css/css.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["mode"]["htmlmixed"] += ["lib/codemirror/mode/htmlmixed/htmlmixed.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["mode"]["javascript"] += ["lib/codemirror/mode/javascript/javascript.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["mode"]["xml"] += ["lib/codemirror/mode/xml/xml.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["codemirror"]["theme"] += ["lib/codemirror/theme/night.css"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["csstree"] += ["lib/csstree/LICENSE"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["csstree"] += ["lib/csstree/css-tree.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["diff"] += ["lib/diff/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["diff"] += ["lib/diff/swatinem_diff.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["hsluv"] += ["lib/hsluv/LICENSE"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["hsluv"] += ["lib/hsluv/README"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["hsluv"] += ["lib/hsluv/hsluv-0.1.0.min.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["js-beautify"] += ["lib/js-beautify/LICENSE"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["js-beautify"] += ["lib/js-beautify/README"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["js-beautify"] += ["lib/js-beautify/beautifier.min.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/lz4-block-codec-any.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/lz4-block-codec-js.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/lz4-block-codec-wasm.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/lz4-block-codec.wasm"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["lz4"] += ["lib/lz4/lz4-block-codec.wat"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["publicsuffixlist"] += ["lib/publicsuffixlist/publicsuffixlist.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["publicsuffixlist"]["wasm"] += ["lib/publicsuffixlist/wasm/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["publicsuffixlist"]["wasm"] += ["lib/publicsuffixlist/wasm/publicsuffixlist.wasm"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["publicsuffixlist"]["wasm"] += ["lib/publicsuffixlist/wasm/publicsuffixlist.wat"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["regexanalyzer"] += ["lib/regexanalyzer/CHANGES.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["regexanalyzer"] += ["lib/regexanalyzer/README.md"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["lib"]["regexanalyzer"] += ["lib/regexanalyzer/regex.js"]
+-
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/1x1.gif"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/2x2.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/32x32.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/3x2.png"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/README.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/adthrive_abd.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/amazon_ads.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/amazon_apstag.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/ampproject_v0.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/chartbeat.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/click2load.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/dom-inspector.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/doubleclick_instream_ad_status.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/empty"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/epicker-ui.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/fingerprint2.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/fingerprint3.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/google-analytics_analytics.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/google-analytics_cx_api.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/google-analytics_ga.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/google-analytics_inpage_linkid.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/google-ima.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/googlesyndication_adsbygoogle.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/googletagmanager_gtm.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/googletagservices_gpt.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/hd-main.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/nitropay_ads.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/nobab.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/nobab2.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noeval-silent.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noeval.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/nofab.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-0.1s.mp3"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-0.5s.mp3"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-1s.mp4"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-vast2.xml"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-vast3.xml"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-vast4.xml"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop-vmap1.xml"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop.css"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop.html"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop.json"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/noop.txt"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/outbrain-widget.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/popads-dummy.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/popads.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/prebid-ads.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/scorecardresearch_beacon.js"]
+-FINAL_TARGET_FILES.features["uBlock0@raymondhill.net"]["web_accessible_resources"] += ["web_accessible_resources/sensors-analytics.js"]
++JAR_MANIFESTS += ["jar.mn"]
