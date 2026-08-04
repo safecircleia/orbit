@@ -140,7 +140,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -184,7 +184,6 @@ jobs:
           commit_user_name: Orbit Browser Robot
           commit_user_email: orbit-browser-auto@users.noreply.github.com
 
-
   check-release:
     runs-on: ubuntu-latest
     needs: [build-data]
@@ -196,7 +195,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -238,7 +237,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -366,7 +365,7 @@ jobs:
     strategy:
       matrix:
         arch: [x86_64, aarch64]
-    needs: [linux]
+    needs: [linux, build-data]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -375,7 +374,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -395,14 +394,14 @@ jobs:
           set -eux
           export ARCH=${{ matrix.arch }}
           UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|desktop|latest|orbit-browser-$ARCH.AppImage.zsync"
-          
+
           # Create AppDir structure and extract tarball first
           APPDIR=build/AppDir
           mkdir -p $APPDIR/usr/share/icons/hicolor/128x128/apps
           tar -xvf *.tar.* && rm -rf *.tar.*
           mv orbit-browser/* $APPDIR/
           rmdir orbit-browser
-          
+
           # Now copy branding files
           rm $APPDIR/.DirIcon || true
           cp configs/branding/${{ inputs.update_branch }}/logo128.png $APPDIR/usr/share/icons/hicolor/128x128/apps/orbit.png
@@ -499,15 +498,7 @@ jobs:
     if: ${{ inputs.create_release || inputs.update_branch == 'beta' }}
     permissions: write-all
     name: Release
-    needs:
-      [
-        build-data,
-        linux,
-        windows-step-3,
-        check-release,
-        appimage,
-        source,
-      ]
+    needs: [build-data, linux, windows-step-3, check-release, appimage, source]
     runs-on: ubuntu-24.04
     environment:
       name: ${{ inputs.update_branch == 'stable' && 'Deploy-Stable' || 'Deploy-Beta' }}
@@ -540,8 +531,8 @@ jobs:
         run: |
           cd updates-server
           mkdir -p updates
-          cp -a ../orbit_update_manifest_x86_64/.  updates/
-          cp -a ../orbit_update_manifest_aarch64/.  updates/
+          cp -a ../linux_update_manifest_x86_64/.  updates/
+          cp -a ../linux_update_manifest_aarch64/.  updates/
           if [[ $RELEASE_BRANCH == 'release' ]]; then
             cp -a ../.github/workflows/object/windows-x64-signed-x86_64/update_manifest/.  updates/
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/

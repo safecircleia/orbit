@@ -51,7 +51,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -105,6 +105,8 @@ jobs:
       - name: Import
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
+          SURFER_CERT_PATCH_ISSUER: ${{ secrets.SURFER_CERT_PATCH_ISSUER }}
+          SURFER_CERT_PATCH_NAME: ${{ secrets.SURFER_CERT_PATCH_NAME }}
         run: |
           . "$HOME/.cargo/env"
           npm run import
@@ -123,6 +125,35 @@ jobs:
         run: |
           mkdir -p ~/.orbit-keys
           echo "${{ secrets.ORBIT_SAFEBROWSING_API_KEY }}" > ~/.orbit-keys/safebrowsing.dat
+
+      - name: Build (PGO stage 1 - generate)
+        if: ${{ matrix.arch == 'x86_64' }}
+        env:
+          SURFER_COMPAT: ${{ matrix.arch }}
+          ORBIT_RELEASE_BRANCH: ${{ inputs.release-branch }}
+          ORBIT_GA_GENERATE_PROFILE: 1
+        continue-on-error: true
+        run: |
+          export SURFER_PLATFORM="linux"
+          if [[ -n ${{ inputs.MOZ_BUILD_DATE }} ]];then
+            export MOZ_BUILD_DATE=${{ inputs.MOZ_BUILD_DATE }}
+          fi
+          bash .github/workflows/src/release-build.sh
+
+      - name: Generate PGO profile data
+        if: ${{ matrix.arch == 'x86_64' }}
+        run: |
+          set -x
+          export DISPLAY=:2
+          export LLVM_PROFDATA="$HOME/.mozbuild/clang/bin/llvm-profdata"
+          export JARLOG_FILE=en-US.log
+          mkdir -p "$HOME/artifact"
+          cd engine
+          ./mach python ../scripts/download_pgo_extended_corpus.py
+          ./mach package
+          ./mach python build/pgo/profileserver.py --extended-corpus ./pgo-extended-corpus
+          mv merged.profdata "$HOME/artifact/merged.profdata"
+          mv en-US.log "$HOME/artifact/en-US.log"
 
       - name: Build
         env:
@@ -172,5 +203,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           retention-days: 5
-          name: orbit_update_manifest_${{ matrix.arch }}
+          name: linux_update_manifest_${{ matrix.arch }}
           path: ./dist/update

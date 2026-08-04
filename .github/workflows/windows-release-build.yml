@@ -60,7 +60,7 @@ jobs:
           token: ${{ secrets.DEPLOY_KEY }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: useblacksmith/setup-node@v5
         with:
           node-version-file: '.nvmrc'
 
@@ -99,7 +99,7 @@ jobs:
         env:
           SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
         id: cache-win-cross
-        uses: actions/cache@v4
+        uses: useblacksmith/cache@v5
         with:
           path: ${HOME}/win-cross
           key: win-cross
@@ -155,16 +155,18 @@ jobs:
             zlib1g-dev \
             aria2
           echo Setup wine
-          aria2c "https://firefox-ci-tc.services.mozilla.com/api/index/v1/task/gecko.cache.level-1.toolchains.v3.linux64-wine.latest/artifacts/public%2Fbuild%2Fwine.tar.zst" -o wine.tar.zst
+          aria2c "https://firefox-ci-tc.services.mozilla.com/api/queue/v1/task/dQz_aHy8Rl-Lt0xf2WlrMw/artifacts/public/build/wine.tar.zst" -o wine.tar.zst
           tar --zstd -xf wine.tar.zst -C ~/win-cross
           rm wine.tar.zst
           echo Setup Visual Studio
-          ./mach python --virtualenv build taskcluster/scripts/misc/get_vs.py build/vs/vs2022.yaml ~/win-cross/vs2022
+          ./mach python --virtualenv build taskcluster/scripts/misc/get_vs.py build/vs/vs2026.yaml ~/win-cross/vs2026
 
       - name: Import
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
+          SURFER_CERT_PATCH_ISSUER: ${{ secrets.SURFER_CERT_PATCH_ISSUER }}
+          SURFER_CERT_PATCH_NAME: ${{ secrets.SURFER_CERT_PATCH_NAME }}
         run: |
           . "$HOME/.cargo/env"
           npm run import -- --verbose
@@ -174,7 +176,7 @@ jobs:
         run: |
           set -x
           cd engine/
-          chmod -R +x "$(echo ~)/win-cross/vs2022" || true
+          chmod -R +x "$(echo ~)/win-cross/vs2026" || true
           cd ..
           export SURFER_PLATFORM="win32"
           npm run bootstrap
@@ -185,7 +187,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install dos2unix
           ls ~/win-cross/wine || true
-          ls ~/win-cross/vs2022 || true
+          ls ~/win-cross/vs2026 || true
 
       - name: Setup Rust
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
@@ -197,12 +199,13 @@ jobs:
           else
             rustup target add x86_64-pc-windows-msvc
           fi
+          WINDOWS_RS_VERSION=$(cat build/windows/.windows-rs-version)
           cd engine/
           cargo install cargo-download --locked
-          cargo download -x windows=0.58.0
+          cargo download -x windows=$WINDOWS_RS_VERSION
           export CARGO_INCREMENTAL=0
           echo "" >> ../configs/windows/mozconfig
-          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-0.58.0" >> ../configs/windows/mozconfig
+          echo "export MOZ_WINDOWS_RS_DIR=$(pwd)/windows-$WINDOWS_RS_VERSION" >> ../configs/windows/mozconfig
 
       - name: Build language packs
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
