@@ -333,6 +333,7 @@ jobs:
       use-sccache: ${{ inputs.use-sccache }}
 
   mac:
+    if: false
     name: macOS build
     uses: ./.github/workflows/macos-release-build.yml
     permissions:
@@ -346,6 +347,7 @@ jobs:
       use-sccache: ${{ inputs.use-sccache }}
 
   mac-uni:
+    if: false
     name: macOS build (Universal)
     uses: ./.github/workflows/macos-universal-release-build.yml
     permissions:
@@ -503,7 +505,6 @@ jobs:
         linux,
         windows-step-3,
         check-release,
-        mac-uni,
         appimage,
         source,
       ]
@@ -539,9 +540,8 @@ jobs:
         run: |
           cd updates-server
           mkdir -p updates
-          cp -a ../linux_update_manifest_x86_64/.  updates/
-          cp -a ../linux_update_manifest_aarch64/.  updates/
-
+          cp -a ../orbit_update_manifest_x86_64/.  updates/
+          cp -a ../orbit_update_manifest_aarch64/.  updates/
           if [[ $RELEASE_BRANCH == 'release' ]]; then
             cp -a ../.github/workflows/object/windows-x64-signed-x86_64/update_manifest/.  updates/
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/
@@ -549,8 +549,7 @@ jobs:
             cp -a ../windows_update_manifest_x86_64/.  updates/
             cp -a ../windows_update_manifest_arm64/.  updates/
           fi
-
-          cp -a ../macos_update_manifest/.  updates/
+          # macOS update manifest disabled (mac builds removed)
 
       - name: Commit
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -585,10 +584,8 @@ jobs:
             ./linux-aarch64.mar/*
             ./windows.mar/*
             ./windows-arm64.mar/*
-            ./macos.mar/*
             ./orbit.installer.exe/*
             ./orbit.installer-arm64.exe/*
-            ./orbit.macos-universal.dmg/*
           tag_name: 'beta'
           name: 'Beta build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }} at ${{ needs.build-data.outputs.build_time }})'
           draft: false
@@ -624,10 +621,8 @@ jobs:
             ./linux-aarch64.mar/*
             ./.github/workflows/object/windows-x64-signed-x86_64/windows.mar
             ./.github/workflows/object/windows-x64-signed-arm64/windows-arm64.mar
-            ./macos.mar/*
             ./.github/workflows/object/windows-x64-signed-x86_64/orbit.installer.exe
             ./.github/workflows/object/windows-x64-signed-arm64/orbit.installer-arm64.exe
-            ./orbit.macos-universal.dmg/*
 
   prepare-flatpak:
     if: ${{ inputs.create_release && inputs.update_branch == 'stable' }}
