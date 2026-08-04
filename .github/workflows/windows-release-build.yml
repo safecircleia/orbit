@@ -64,6 +64,11 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
         if: ${{ inputs.use-sccache }}
@@ -84,16 +89,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip dos2unix yasm nasm build-essential libgtk2.0-dev libpython3-dev m4 uuid libasound2-dev libcurl4-openssl-dev libdbus-1-dev libdrm-dev libdbus-glib-1-dev libgtk-3-dev libpulse-dev libx11-xcb-dev libxt-dev xvfb lld llvm --fix-missing
 
       - name: Load Surfer CI setup
-        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+        run: bun run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
 
       - name: Download Firefox and dependencies
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
-        run: npm run download
+        run: bun run download
 
       - name: win-cross Cache
         env:
@@ -169,7 +174,7 @@ jobs:
           SURFER_CERT_PATCH_NAME: ${{ secrets.SURFER_CERT_PATCH_NAME }}
         run: |
           . "$HOME/.cargo/env"
-          npm run import -- --verbose
+          bun run import -- --verbose
 
       - name: Bootstrap
         if: ${{ !(inputs.generate-gpo && matrix.arch == 'aarch64') }}
@@ -179,7 +184,7 @@ jobs:
           chmod -R +x "$(echo ~)/win-cross/vs2026" || true
           cd ..
           export SURFER_PLATFORM="win32"
-          npm run bootstrap
+          bun run bootstrap
           cd engine/
           ls ~/.mozbuild/clang/lib/clang/
           echo "export LIB=\"$(cd ~/.mozbuild/clang/lib/clang/* && cd lib/windows && pwd)\"" >> ../configs/common/mozconfig
@@ -260,8 +265,8 @@ jobs:
           export SURFER_PLATFORM="win32"
           export ORBIT_CROSS_COMPILING=1
           export ORBIT_RELEASE=1
-          npm run package
-          mv ./dist/orbit-browser-$(npm run --silent surfer -- get version | xargs).en-US.win64${{ matrix.arch == 'aarch64' && '-aarch64' || '' }}.zip orbit-browser.win64.zip
+          bun run package
+          mv ./dist/orbit-browser-$(bun run surfer -- get version | xargs).en-US.win64${{ matrix.arch == 'aarch64' && '-aarch64' || '' }}.zip orbit-browser.win64.zip
           ls ./dist
           ls .
 

@@ -144,9 +144,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
 
       - name: Setup Surfer
         run: |
@@ -155,12 +160,12 @@ jobs:
       - name: Bump version
         if: ${{ inputs.update_version && inputs.update_branch == 'stable' }}
         run: |
-          npm run surfer -- ci --brand ${{ inputs.update_branch }} --bump prerelease
+          bun run surfer -- ci --brand ${{ inputs.update_branch }} --bump prerelease
 
       - name: Bump version without new version
         if: ${{ !inputs.update_version || inputs.update_branch == 'beta' }}
         run: |
-          npm run surfer -- ci --brand ${{ inputs.update_branch }}
+          bun run surfer -- ci --brand ${{ inputs.update_branch }}
 
       - name: Debug
         run: |
@@ -199,9 +204,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
 
       - name: Setup Surfer
         run: |
@@ -209,14 +219,14 @@ jobs:
 
       - name: Activate Surfer CLI
         run: |
-          npm run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
+          bun run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
 
       - name: Check version
         run: |
           echo "$(pwd)"
-          echo $(npm run --silent surfer -- get version | xargs)
-          echo "version=$(npm run --silent surfer -- get version | xargs)" >> $GITHUB_OUTPUT
-          if [[ $(npm run --silent surfer -- get version | xargs) == ${{ needs.build-data.outputs.version }} ]]; then
+          echo $(bun run surfer -- get version | xargs)
+          echo "version=$(bun run surfer -- get version | xargs)" >> $GITHUB_OUTPUT
+          if [[ $(bun run surfer -- get version | xargs) == ${{ needs.build-data.outputs.version }} ]]; then
             echo ">>> Version matches"
           else
             echo ">>> Version mismatch"
@@ -241,6 +251,11 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Setup Git
         run: |
           git config --global user.email "tomasps@users.noreply.github.com"
@@ -248,16 +263,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
 
       - name: Load Surfer CI setup
-        run: npm run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
+        run: bun run surfer -- ci --brand ${{ inputs.update_branch }} --display-version ${{ needs.build-data.outputs.version }}
 
       - name: Download Firefox source and dependencies
-        run: npm run download --verbose
+        run: bun run download --verbose
 
       - name: Import
-        run: npm run import -- --verbose
+        run: bun run import -- --verbose
 
       - name: Build language packs
         run: sh scripts/download-language-packs.sh
@@ -378,9 +393,14 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
           sudo apt-get update
           sudo apt-get -y install libfuse2 desktop-file-utils appstream
 
@@ -633,11 +653,11 @@ jobs:
         run: |
           git pull
           sudo apt-get update
-          npm ci
+          bun install
 
       - name: Generate new Flatpak release
         run: |
-          npm run build-flatpak -- \
+          bun run build-flatpak -- \
             --version ${{ needs.build-data.outputs.version }}
 
       - name: Commit

@@ -55,6 +55,11 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@main
         if: ${{ inputs.use-sccache }}
@@ -82,13 +87,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm ci
+          bun install
 
       - name: Load Surfer CI setup
-        run: npm run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
+        run: bun run surfer -- ci --brand ${{ inputs.release-branch }} --display-version ${{ inputs.build-version }}
 
       - name: Download Firefox source and dependencies
-        run: npm run download
+        run: bun run download
 
       - name: Fix Rust version
         run: |
@@ -109,7 +114,7 @@ jobs:
           SURFER_CERT_PATCH_NAME: ${{ secrets.SURFER_CERT_PATCH_NAME }}
         run: |
           . "$HOME/.cargo/env"
-          npm run import
+          bun run import
 
       - name: Build language packs
         run: sh scripts/download-language-packs.sh
@@ -174,7 +179,7 @@ jobs:
         run: |
           export SURFER_PLATFORM="linux"
           export ORBIT_RELEASE=1
-          npm run package
+          bun run package
 
       - name: Remove API Keys
         run: |
