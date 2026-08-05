@@ -25,7 +25,7 @@ on:
         description: 'Use sccache'
         required: true
         type: 'boolean'
-        default: false
+        default: true
   workflow_call:
     inputs:
       create_release:
@@ -47,7 +47,7 @@ on:
         description: 'Use sccache'
         required: true
         type: 'boolean'
-        default: false
+        default: true
 
 jobs:
   buildid:
