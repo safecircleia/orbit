@@ -77,6 +77,8 @@ jobs:
         if: ${{ matrix.arch == 'x86_64' }}
         run: |
           git config --global core.safecrlf false
+          # Pre-create ublock-origin dir so surfer skips the bash-dependent unzip step
+          New-Item -ItemType Directory -Force -Path engine\browser\extensions\ublock-origin | Out-Null
           bun run download
 
       - name: Import patches
