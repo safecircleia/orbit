@@ -73,19 +73,38 @@ jobs:
           (New-Object System.Net.WebClient).DownloadFile("https://ftp.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-Latest.exe", "C:\MozillaBuildSetup-Latest.exe")
           C:\MozillaBuildSetup-Latest.exe /S | out-null
 
-      - name: Download Firefox and dependencies
+      - name: Download source artifact
         if: ${{ matrix.arch == 'x86_64' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: orbit.source.tar.zst
+          path: .
+
+      - name: Extract Firefox source
+        if: ${{ matrix.arch == 'x86_64' }}
+        shell: bash
         run: |
-          git config --global core.safecrlf false
-          # Pre-create ublock-origin dir so surfer skips the bash-dependent unzip step
-          New-Item -ItemType Directory -Force -Path engine\browser\extensions\ublock-origin | Out-Null
-          bun run download
+          mkdir -p engine
+          tar --zstd -xf orbit.source.tar.zst -C engine
 
       - name: Import patches
         if: ${{ matrix.arch == 'x86_64' }}
         env:
           SURFER_NO_BRANDING_PATCH: true
-        run: bun run import
+          CI_SKIP_INIT: '1'
+        shell: bash
+        run: |
+          # Initialize engine as a git repo so git apply works for patches
+          # (mirrors what surfer's init.js does, but skips the slow git add -A commit)
+          cd engine
+          git init
+          git checkout --orphan orbit_browser
+          git config commit.gpgsign false
+          git config core.safecrlf false
+          git add -f .
+          git commit -aqm "Firefox source"
+          cd ..
+          bun run import
 
       - name: Generate
         if: ${{ matrix.arch == 'x86_64' }}
