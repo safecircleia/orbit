@@ -1,0 +1,7 @@
+# Force LF line endings for patch files and scripts to prevent CRLF corruption on Windows
+*.patch text eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+
+# Default: auto-detect text files and normalize to LF
+* text=auto eol=lf
