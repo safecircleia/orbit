@@ -287,6 +287,36 @@ jobs:
           mv ./dist/output.mar windows${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.mar
           mv ./dist/orbit-browser.installer.exe ./orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
 
+      - name: Sign Windows binaries
+        if: ${{ !inputs.generate-gpo && secrets.WINDOWS_SIGNING_CERT_BASE64 != '' }}
+        env:
+          CERT_BASE64: ${{ secrets.WINDOWS_SIGNING_CERT_BASE64 }}
+          CERT_PASS: ${{ secrets.WINDOWS_SIGNING_CERT_PASSWORD }}
+          ARCH_SUFFIX: ${{ matrix.arch == 'aarch64' && '-arm64' || '' }}
+          ARCH_LABEL: ${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}
+        run: |
+          set -e
+          sudo apt-get install -y osslsigncode > /dev/null 2>&1
+
+          echo "$CERT_BASE64" | base64 -d > /tmp/signing.pfx
+
+          INSTALLER="orbit-browser.installer${ARCH_SUFFIX}.exe"
+          INSTALLER_SIGNED="orbit-browser.installer${ARCH_SUFFIX}.signed.exe"
+
+          echo "Signing installer: $INSTALLER"
+          osslsigncode sign \
+            -pkcs12 /tmp/signing.pfx \
+            -pass "$CERT_PASS" \
+            -n "Orbit Browser" \
+            -i "https://safecircle.tech" \
+            -t "http://timestamp.digicert.com" \
+            -in "$INSTALLER" \
+            -out "$INSTALLER_SIGNED"
+          mv "$INSTALLER_SIGNED" "$INSTALLER"
+
+          rm -f /tmp/signing.pfx
+          echo "Signing complete."
+
       - name: Upload artifact (PGO)
         uses: actions/upload-artifact@v4
         if: ${{ inputs.generate-gpo && matrix.arch == 'x86_64' }}

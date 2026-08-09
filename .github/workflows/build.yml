@@ -514,11 +514,82 @@ jobs:
   #         echo "Removing self-hosted runner script"
   #         rm stop.sh || true
 
+  sign-windows:
+    if: ${{ inputs.update_branch == 'stable' && inputs.create_release }}
+    name: Sign Windows binaries
+    needs: [build-data, windows-step-3]
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64]
+    steps:
+      - name: Install osslsigncode
+        run: sudo apt-get install -y osslsigncode
+
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: |
+            orbit-browser.win-${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}.zip
+            orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
+            windows${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.mar
+            windows_update_manifest_${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}
+          merge-multiple: true
+
+      - name: Sign installer
+        env:
+          CERT_BASE64: ${{ secrets.WINDOWS_SIGNING_CERT_BASE64 }}
+          CERT_PASS: ${{ secrets.WINDOWS_SIGNING_CERT_PASSWORD }}
+          ARCH_SUFFIX: ${{ matrix.arch == 'aarch64' && '-arm64' || '' }}
+        run: |
+          set -e
+          echo "$CERT_BASE64" | base64 -d > /tmp/signing.pfx
+          INSTALLER="orbit-browser.installer${ARCH_SUFFIX}.exe"
+          osslsigncode sign \
+            -pkcs12 /tmp/signing.pfx \
+            -pass "$CERT_PASS" \
+            -n "Orbit Browser" \
+            -i "https://safecircle.tech" \
+            -t "http://timestamp.digicert.com" \
+            -in "$INSTALLER" \
+            -out "${INSTALLER}.signed"
+          mv "${INSTALLER}.signed" "$INSTALLER"
+          rm -f /tmp/signing.pfx
+
+      - name: Checkout orbit-windows-binaries
+        uses: actions/checkout@v4
+        with:
+          repository: safecircleia/orbit-windows-binaries
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: orbit-windows-binaries
+
+      - name: Copy signed artifacts into repo
+        env:
+          ARCH_SUFFIX: ${{ matrix.arch == 'aarch64' && '-arm64' || '' }}
+          ARCH_LABEL: ${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}
+          DIR: ${{ matrix.arch == 'aarch64' && 'windows-x64-signed-arm64' || 'windows-x64-signed-x86_64' }}
+        run: |
+          set -e
+          mkdir -p "orbit-windows-binaries/${DIR}/update_manifest"
+          cp "orbit-browser.win-${ARCH_LABEL}.zip"     "orbit-windows-binaries/${DIR}/orbit-browser.win-${ARCH_LABEL}.zip"
+          cp "orbit-browser.installer${ARCH_SUFFIX}.exe" "orbit-windows-binaries/${DIR}/orbit-browser.installer${ARCH_SUFFIX}.exe"
+          cp "windows${ARCH_SUFFIX}.mar"                "orbit-windows-binaries/${DIR}/windows${ARCH_SUFFIX}.mar"
+          cp -a update_manifest/.                       "orbit-windows-binaries/${DIR}/update_manifest/"
+
+      - name: Commit and push signed binaries
+        run: |
+          cd orbit-windows-binaries
+          git config user.name "Orbit Browser Robot"
+          git config user.email "orbit-browser-auto@users.noreply.github.com"
+          git add .
+          git commit -m "chore: update signed Windows ${{ matrix.arch }} binaries for ${{ needs.build-data.outputs.version }}" || echo "Nothing to commit"
+          git push
+
   release:
-    if: ${{ inputs.create_release || inputs.update_branch == 'beta' }}
+    if: ${{ (inputs.create_release || inputs.update_branch == 'beta') && (needs.sign-windows.result == 'success' || needs.sign-windows.result == 'skipped') }}
     permissions: write-all
     name: Release
-    needs: [build-data, linux, windows-step-3, check-release, appimage, source]
+    needs: [build-data, linux, windows-step-3, check-release, appimage, source, sign-windows]
     runs-on: ubuntu-24.04
     environment:
       name: ${{ inputs.update_branch == 'stable' && 'Deploy-Stable' || 'Deploy-Beta' }}
