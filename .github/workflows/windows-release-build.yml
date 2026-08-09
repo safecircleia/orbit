@@ -288,13 +288,16 @@ jobs:
           mv ./dist/orbit-browser.installer.exe ./orbit-browser.installer${{ matrix.arch == 'aarch64' && '-arm64' || '' }}.exe
 
       - name: Sign Windows binaries
-        if: ${{ !inputs.generate-gpo && secrets.WINDOWS_SIGNING_CERT_BASE64 != '' }}
+        if: ${{ !inputs.generate-gpo }}
         env:
           CERT_BASE64: ${{ secrets.WINDOWS_SIGNING_CERT_BASE64 }}
           CERT_PASS: ${{ secrets.WINDOWS_SIGNING_CERT_PASSWORD }}
           ARCH_SUFFIX: ${{ matrix.arch == 'aarch64' && '-arm64' || '' }}
-          ARCH_LABEL: ${{ matrix.arch == 'aarch64' && 'arm64' || matrix.arch }}
         run: |
+          if [ -z "$CERT_BASE64" ]; then
+            echo "No signing cert configured, skipping signing."
+            exit 0
+          fi
           set -e
           sudo apt-get install -y osslsigncode > /dev/null 2>&1
 
