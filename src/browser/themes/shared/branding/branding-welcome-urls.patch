@@ -1,0 +1,28 @@
+diff --git a/browser/branding/beta/pref/firefox-branding.js b/browser/branding/beta/pref/firefox-branding.js
+--- a/browser/branding/beta/pref/firefox-branding.js
++++ b/browser/branding/beta/pref/firefox-branding.js
+@@ -4,8 +4,8 @@
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ pref("startup.homepage_override_url", "https://zen-browser.app/whatsnew?v=%VERSION%");
+-pref("startup.homepage_welcome_url", "https://zen-browser.app/welcome/");
+-pref("startup.homepage_welcome_url.additional", "https://zen-browser.app/privacy-policy/");
++pref("startup.homepage_welcome_url", "https://safecircle.tech/orbit");
++pref("startup.homepage_welcome_url.additional", "https://safecircle.tech/privacy");
+ 
+ // Give the user x seconds to react before showing the big UI. default=192 hours
+ pref("app.update.promptWaitTime", 691200);
+diff --git a/browser/branding/stable/pref/firefox-branding.js b/browser/branding/stable/pref/firefox-branding.js
+--- a/browser/branding/stable/pref/firefox-branding.js
++++ b/browser/branding/stable/pref/firefox-branding.js
+@@ -4,8 +4,8 @@
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ pref("startup.homepage_override_url", "https://zen-browser.app/whatsnew?v=%VERSION%");
+-pref("startup.homepage_welcome_url", "https://zen-browser.app/welcome/");
+-pref("startup.homepage_welcome_url.additional", "https://zen-browser.app/privacy-policy/");
++pref("startup.homepage_welcome_url", "https://safecircle.tech/orbit");
++pref("startup.homepage_welcome_url.additional", "https://safecircle.tech/privacy");
+ 
+ // Give the user x seconds to react before showing the big UI. default=192 hours
+ pref("app.update.promptWaitTime", 691200);
