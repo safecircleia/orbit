@@ -5,8 +5,8 @@
   "binaryName": "orbit-browser",
   "version": {
     "product": "firefox",
-    "version": "153.0.1",
-    "candidate": "153.0.1"
+    "version": "157.0",
+    "candidate": "157.0"
   },
   "buildOptions": {
     "generateBranding": true

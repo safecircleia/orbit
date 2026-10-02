@@ -1,12 +1,26 @@
-diff --git a/browser/extensions/newtab/css/activity-stream.css b/browser/extensions/newtab/css/activity-stream.css
---- a/browser/extensions/newtab/css/activity-stream.css
-+++ b/browser/extensions/newtab/css/activity-stream.css
-@@ -332,7 +332,7 @@ body {
-   background-repeat: no-repeat;
-   background-size: cover;
+diff --git a/browser/extensions/newtab/content-src/styles/activity-stream.scss b/browser/extensions/newtab/content-src/styles/activity-stream.scss
+index c0c853b..cc7f993 100644
+--- a/browser/extensions/newtab/content-src/styles/activity-stream.scss
++++ b/browser/extensions/newtab/content-src/styles/activity-stream.scss
+@@ -37,7 +37,7 @@ body {
    background-position: var(--newtab-wallpaper-backgroundPosition);
    background-attachment: fixed;
--  background-image: var(--newtab-wallpaper, ""), linear-gradient(to right, var(--newtab-wallpaper-color, ""), var(--newtab-wallpaper-color, ""));
-+  background-image: var(--newtab-wallpaper, url("chrome://branding/content/orbit-newtab-bg.png")), linear-gradient(to right, var(--newtab-wallpaper-color, transparent), var(--newtab-wallpaper-color, transparent));
+   background-image:
+-    var(--newtab-wallpaper, ''),
++    var(--newtab-wallpaper, url('chrome://branding/content/orbit-newtab-bg.png')),
+     linear-gradient(to right, var(--newtab-wallpaper-color, ''), var(--newtab-wallpaper-color, ''));
+   overflow-y: auto;
+ }
+diff --git a/browser/extensions/newtab/content-src/styles/nova/activity-stream.scss b/browser/extensions/newtab/content-src/styles/nova/activity-stream.scss
+index 41ea1c4..59b3091 100644
+--- a/browser/extensions/newtab/content-src/styles/nova/activity-stream.scss
++++ b/browser/extensions/newtab/content-src/styles/nova/activity-stream.scss
+@@ -44,7 +44,7 @@ body {
+   background-position: var(--newtab-wallpaper-backgroundPosition);
+   background-attachment: fixed;
+   background-image:
+-    var(--newtab-wallpaper, ''),
++    var(--newtab-wallpaper, url('chrome://branding/content/orbit-newtab-bg.png')),
+     linear-gradient(to right, var(--newtab-wallpaper-color, ''), var(--newtab-wallpaper-color, ''));
    overflow-y: auto;
  }

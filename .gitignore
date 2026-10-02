@@ -22,3 +22,15 @@ target/
 .vscode/
 
 locales/firefox-l10n/
+
+# Local scratch and AI-agent tooling
+l10n-temp/
+.agents/
+.claude/
+.cline/
+.codebuddy/
+.codegraph/
+.continue/
+.junie/
+.kiro/
+.serena/

@@ -8,7 +8,12 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    ignores: ['**/vendor/**', '**/tests/**'],
+    ignores: [
+      'engine/**',
+      'src/browser/extensions/ublock-origin/**',
+      '**/vendor/**',
+      '**/tests/**',
+    ],
   },
   {
     files: ['**/*.{js,mjs,cjs}'],

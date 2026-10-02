@@ -37,3 +37,5 @@ src/zen/split-view/zen-decks.css
 src/zen/workspaces/zen-workspaces.css
 
 *.inc
+# Vendored uBlock Origin (GPL, third-party code)
+src/browser/extensions/ublock-origin/
