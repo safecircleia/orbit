@@ -1,8 +1,8 @@
 diff --git a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
-index 853e041324..82bc69ea88 100644
+index 853e041324..46b5fe67ad 100644
 --- a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
 +++ b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
-@@ -863,9 +863,66 @@ async function getAttributionContent() {
+@@ -863,9 +863,74 @@ async function getAttributionContent() {
    return null;
  }
  
@@ -13,6 +13,13 @@ index 853e041324..82bc69ea88 100644
 +  "AW_THEME_PICKER",
 +];
 +const ORBIT_SCREEN_BACKGROUND = "var(--mr-screen-background-color)";
++// One-line subtitle: a wrapped one overlaps the checkbox tile in this layout.
++const ORBIT_SCREEN_COPY = {
++  AW_EASY_SETUP: {
++    title: { raw: "Make Orbit your default" },
++    subtitle: { raw: "Open links from other apps in Orbit." },
++  },
++};
 +
 +const ORBIT_WELCOME_SCREEN = {
 +  id: "ORBIT_WELCOME",
@@ -56,6 +63,7 @@ index 853e041324..82bc69ea88 100644
 +        ...(id === "AW_THEME_PICKER" ? {} : { targeting }),
 +        content: {
 +          ...rest,
++          ...ORBIT_SCREEN_COPY[id],
 +          position: "center",
 +          background: ORBIT_SCREEN_BACKGROUND,
 +        },

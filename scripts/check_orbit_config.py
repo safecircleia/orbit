@@ -98,6 +98,13 @@ def onboarding_screens_and_targeting():
 
 
 @check
+def onboarding_default_browser_copy_is_short_and_orbit():
+  patch = text(ONBOARDING_PATCH)
+  assert 'Make Orbit your default' in patch
+  assert 'Open links from other apps in Orbit.' in patch, 'one-line subtitle avoids the tile overlap'
+
+
+@check
 def policies_are_packaged():
   patch = text('src/browser/app/distribution/policies.patch')
   assert '+++ b/browser/installer/package-manifest.in' in patch, 'distribution/ is only packaged for BUILT_BY_MOZILLA'
