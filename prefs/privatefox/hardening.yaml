@@ -1,0 +1,21 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# HTTPS-only, strict tracking protection, fingerprinting protection
+- name: dom.security.https_only_mode
+  value: true
+
+- name: browser.contentblocking.category
+  value: 'strict'
+
+- name: privacy.fingerprintingProtection
+  value: true
+
+# DNS-over-HTTPS via Cloudflare Security (blocks malware/phishing domains).
+# Mode 2 = DoH first, fall back to system DNS if Cloudflare is unreachable.
+- name: network.trr.mode
+  value: 2
+
+- name: network.trr.uri
+  value: 'https://security.cloudflare-dns.com/dns-query'

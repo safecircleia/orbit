@@ -8,9 +8,3 @@
 
 - name: full-screen-api.transition-duration.leave
   value: '0 0'
-
-- name: full-screen-api.warning.delay
-  value: -1
-
-- name: full-screen-api.warning.timeout
-  value: 0

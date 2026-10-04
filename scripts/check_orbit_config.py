@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+"""Static checks for Orbit's release config. Run: python3 scripts/check_orbit_config.py"""
+
+import pathlib
+import re
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+CHECKS = []
+
+
+def check(fn):
+  CHECKS.append(fn)
+  return fn
+
+
+def text(path):
+  return (ROOT / path).read_text()
+
+
+def pref_value(name):
+  pattern = re.compile(r'^- name: ' + re.escape(name) + r'\n  value: (.+)$', re.M)
+  for yaml_file in (ROOT / 'prefs').rglob('*.yaml'):
+    match = pattern.search(yaml_file.read_text())
+    if match:
+      return match.group(1).strip()
+  return None
+
+
+@check
+def fullscreen_warning_not_suppressed():
+  assert 'full-screen-api.warning' not in text('prefs/firefox/fullscreen.yaml'), \
+      'fullscreen warning overrides still present'
+
+
+@check
+def hardening_prefs():
+  expected = {
+      'dom.security.https_only_mode': 'true',
+      'browser.contentblocking.category': "'strict'",
+      'privacy.fingerprintingProtection': 'true',
+      'network.trr.mode': '2',
+      'network.trr.uri': "'https://security.cloudflare-dns.com/dns-query'",
+  }
+  for name, value in expected.items():
+    assert pref_value(name) == value, f'{name}: {pref_value(name)!r} != {value!r}'
+
+
+@check
+def resist_fingerprinting_untouched():
+  assert pref_value('privacy.resistFingerprinting') is None
+
+
+if __name__ == '__main__':
+  failed = 0
+  for fn in CHECKS:
+    try:
+      fn()
+      print(f'ok   {fn.__name__}')
+    except AssertionError as error:
+      failed += 1
+      print(f'FAIL {fn.__name__}: {error}')
+  sys.exit(1 if failed else 0)
