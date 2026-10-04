@@ -98,6 +98,13 @@ def onboarding_screens_and_targeting():
 
 
 @check
+def policies_are_packaged():
+  patch = text('src/browser/app/distribution/policies.patch')
+  assert '+++ b/browser/installer/package-manifest.in' in patch, 'distribution/ is only packaged for BUILT_BY_MOZILLA'
+  assert '-#if defined(BUILT_BY_MOZILLA)' in patch
+
+
+@check
 def release_metadata():
   import json
   surfer = json.loads(text('surfer.json'))
