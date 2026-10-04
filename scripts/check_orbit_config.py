@@ -97,6 +97,23 @@ def onboarding_screens_and_targeting():
   assert 'AW_THEME_PICKER' in patch and 'targeting' in patch, 'targeting must be preserved'
 
 
+@check
+def release_metadata():
+  import json
+  surfer = json.loads(text('surfer.json'))
+  assert surfer['brands']['beta']['release']['displayVersion'] == '0.2b'
+  assert surfer['version']['version'] == '157.0'
+  notes = json.loads(text('src/release-notes/stable.json'))
+  assert notes[0]['version'] == '0.2b', f"latest release note is {notes[0]['version']}"
+  assert 'Firefox 157' in json.dumps(notes[0])
+
+
+@check
+def prefs_readme_is_orbit():
+  readme = text('prefs/README.md')
+  assert 'Zen' not in readme and 'zen/' not in readme
+
+
 if __name__ == '__main__':
   failed = 0
   for fn in CHECKS:

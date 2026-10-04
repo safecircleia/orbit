@@ -1,5 +1,26 @@
 [
   {
+    "version": "0.2b",
+    "extra": "Orbit 0.2 beta: onboarding, stronger privacy defaults and family/school controls, on Firefox 157.",
+    "features": [
+      "First-run onboarding: privacy promise, default browser, import, theme",
+      "HTTPS-only mode, strict tracking protection and fingerprinting protection by default",
+      "Encrypted DNS through Cloudflare Security (blocks known malware and phishing domains)",
+      "Safe-search default search engine; about:config blocked; uBlock Origin locked on",
+      "Built on Firefox 157"
+    ],
+    "fixes": ["Fullscreen warning restored so pages cannot spoof the browser UI"],
+    "breakingChanges": [],
+    "themeChanges": [],
+    "changes": [],
+    "knownIssues": [
+      "HTTPS-only mode shows a warning page on sites without HTTPS; you can continue to the site from that page",
+      "Strict tracking protection can break some sites; use the shield icon to relax it per site",
+      "Encrypted DNS bypasses a network's own DNS filtering while Cloudflare is reachable",
+      "Beta builds are experimental, some features may be unstable"
+    ]
+  },
+  {
     "version": "0.0.1b",
     "extra": "Welcome to the first beta release of Orbit Browser by SafeCircle.\n\nOrbit is a privacy-focused browser built for families, schools, and privacy-conscious users, based on Mozilla Firefox.",
     "features": [

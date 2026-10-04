@@ -46,7 +46,7 @@
       "brandShortName": "Orbit Browser",
       "brandFullName": "Orbit Browser Beta",
       "release": {
-        "displayVersion": "0.1b",
+        "displayVersion": "0.2b",
         "github": {
           "repo": "safecircleia/orbit"
         }
