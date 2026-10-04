@@ -76,6 +76,27 @@ def policies_json_valid_and_complete():
   assert 'FINAL_TARGET_FILES.distribution' in text('src/browser/app/distribution/policies.patch')
 
 
+ONBOARDING_PATCH = 'src/browser/components/aboutwelcome/orbit-onboarding.patch'
+
+
+@check
+def onboarding_enabled_and_first_run_points_at_it():
+  assert pref_value('browser.aboutwelcome.enabled') is None, 'aboutwelcome is still disabled'
+  urls = text('src/browser/themes/shared/branding/branding-welcome-urls.patch')
+  assert urls.count('+pref("startup.homepage_welcome_url", "about:welcome");') == 2
+  assert urls.count('+pref("startup.homepage_welcome_url.additional", "");') == 2
+
+
+@check
+def onboarding_screens_and_targeting():
+  patch = text(ONBOARDING_PATCH)
+  for needle in ('id: "ORBIT_WELCOME"', 'https://safecircle.tech/privacy',
+                 '"AW_EASY_SETUP"', '"AW_IMPORT_SETTINGS_EMBEDDED"', '"AW_THEME_PICKER"'):
+    assert needle in patch, f'missing {needle}'
+  assert 'secondary_button_top' in patch, 'sign-in/backup buttons must be stripped'
+  assert 'AW_THEME_PICKER' in patch and 'targeting' in patch, 'targeting must be preserved'
+
+
 if __name__ == '__main__':
   failed = 0
   for fn in CHECKS:

@@ -9,8 +9,8 @@ diff --git a/browser/branding/beta/pref/firefox-branding.js b/browser/branding/b
 -pref("startup.homepage_welcome_url", "https://zen-browser.app/welcome/");
 -pref("startup.homepage_welcome_url.additional", "https://zen-browser.app/privacy-policy/");
 +pref("startup.homepage_override_url", "");
-+pref("startup.homepage_welcome_url", "https://safecircle.tech/orbit");
-+pref("startup.homepage_welcome_url.additional", "https://safecircle.tech/privacy");
++pref("startup.homepage_welcome_url", "about:welcome");
++pref("startup.homepage_welcome_url.additional", "");
  
  // Give the user x seconds to react before showing the big UI. default=192 hours
  pref("app.update.promptWaitTime", 691200);
@@ -42,8 +42,8 @@ diff --git a/browser/branding/stable/pref/firefox-branding.js b/browser/branding
 -pref("startup.homepage_welcome_url", "https://zen-browser.app/welcome/");
 -pref("startup.homepage_welcome_url.additional", "https://zen-browser.app/privacy-policy/");
 +pref("startup.homepage_override_url", "");
-+pref("startup.homepage_welcome_url", "https://safecircle.tech/orbit");
-+pref("startup.homepage_welcome_url.additional", "https://safecircle.tech/privacy");
++pref("startup.homepage_welcome_url", "about:welcome");
++pref("startup.homepage_welcome_url.additional", "");
  
  // Give the user x seconds to react before showing the big UI. default=192 hours
  pref("app.update.promptWaitTime", 691200);

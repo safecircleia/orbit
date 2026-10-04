@@ -1,0 +1,73 @@
+diff --git a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
+index 853e041324..82bc69ea88 100644
+--- a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
++++ b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
+@@ -863,9 +863,66 @@ async function getAttributionContent() {
+   return null;
+ }
+ 
+-// Return default multistage welcome content
++const ORBIT_REUSED_SCREENS = [
++  "AW_EASY_SETUP",
++  "AW_IMPORT_SETTINGS_EMBEDDED",
++  "AW_THEME_PICKER",
++];
++const ORBIT_SCREEN_BACKGROUND = "var(--mr-screen-background-color)";
++
++const ORBIT_WELCOME_SCREEN = {
++  id: "ORBIT_WELCOME",
++  content: {
++    fullscreen: true,
++    position: "center",
++    background: ORBIT_SCREEN_BACKGROUND,
++    progress_bar: true,
++    logo: {},
++    title: { raw: "Welcome to Orbit" },
++    subtitle: {
++      raw: "Orbit is a private browser by SafeCircle. It blocks ads and trackers with uBlock Origin, upgrades connections to HTTPS, encrypts your DNS lookups, and sends no telemetry.",
++    },
++    primary_button: {
++      label: { raw: "Get started" },
++      action: { navigate: true },
++    },
++    secondary_button: {
++      label: { raw: "Read our privacy policy" },
++      action: {
++        type: "OPEN_URL",
++        data: { args: "https://safecircle.tech/privacy", where: "tabshifted" },
++      },
++      has_arrow_icon: true,
++    },
++  },
++};
++
++// Orbit onboarding: welcome, then Firefox's default-browser, import and theme
++// screens on a plain background with no sign-in or backup-restore buttons.
+ function getDefaults() {
+-  return Cu.cloneInto(MR_ABOUT_WELCOME_DEFAULT, {});
++  const reusedScreens = MR_ABOUT_WELCOME_DEFAULT.screens
++    .filter(({ id }) => ORBIT_REUSED_SCREENS.includes(id))
++    .map(({ id, targeting, content }) => {
++      // eslint-disable-next-line no-unused-vars
++      const { secondary_button_top, ...rest } = content;
++      return {
++        id,
++        // The theme picker is only targeted at the Nova UI; always show it.
++        ...(id === "AW_THEME_PICKER" ? {} : { targeting }),
++        content: {
++          ...rest,
++          position: "center",
++          background: ORBIT_SCREEN_BACKGROUND,
++        },
++      };
++    });
++  return Cu.cloneInto(
++    {
++      ...MR_ABOUT_WELCOME_DEFAULT,
++      screens: [ORBIT_WELCOME_SCREEN, ...reusedScreens],
++    },
++    {}
++  );
+ }
+ 
+ let gSourceL10n = null;
