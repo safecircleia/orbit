@@ -1,8 +1,8 @@
 diff --git a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
-index 853e041324..46b5fe67ad 100644
+index 853e041324..1843777676 100644
 --- a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
 +++ b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
-@@ -863,9 +863,74 @@ async function getAttributionContent() {
+@@ -863,9 +863,87 @@ async function getAttributionContent() {
    return null;
  }
  
@@ -13,11 +13,21 @@ index 853e041324..46b5fe67ad 100644
 +  "AW_THEME_PICKER",
 +];
 +const ORBIT_SCREEN_BACKGROUND = "var(--mr-screen-background-color)";
-+// One-line subtitle: a wrapped one overlaps the checkbox tile in this layout.
-+const ORBIT_SCREEN_COPY = {
++// The multi-select tile is only laid out for the split layout, so the
++// default-browser screen uses a single button instead.
++const ORBIT_SCREEN_OVERRIDES = {
 +  AW_EASY_SETUP: {
-+    title: { raw: "Make Orbit your default" },
-+    subtitle: { raw: "Open links from other apps in Orbit." },
++    targeting:
++      "!isDefaultBrowser && 'browser.shell.checkDefaultBrowser'|preferenceValue",
++    content: {
++      title: { raw: "Make Orbit your default" },
++      subtitle: { raw: "Open links from other apps in Orbit." },
++      tiles: undefined,
++      primary_button: {
++        label: { raw: "Set as default" },
++        action: { type: "SET_DEFAULT_BROWSER", navigate: true },
++      },
++    },
 +  },
 +};
 +
@@ -57,13 +67,16 @@ index 853e041324..46b5fe67ad 100644
 +    .map(({ id, targeting, content }) => {
 +      // eslint-disable-next-line no-unused-vars
 +      const { secondary_button_top, ...rest } = content;
++      const override = ORBIT_SCREEN_OVERRIDES[id];
 +      return {
 +        id,
 +        // The theme picker is only targeted at the Nova UI; always show it.
-+        ...(id === "AW_THEME_PICKER" ? {} : { targeting }),
++        ...(id === "AW_THEME_PICKER"
++          ? {}
++          : { targeting: override?.targeting ?? targeting }),
 +        content: {
 +          ...rest,
-+          ...ORBIT_SCREEN_COPY[id],
++          ...override?.content,
 +          position: "center",
 +          background: ORBIT_SCREEN_BACKGROUND,
 +        },

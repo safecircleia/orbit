@@ -98,10 +98,13 @@ def onboarding_screens_and_targeting():
 
 
 @check
-def onboarding_default_browser_copy_is_short_and_orbit():
+def onboarding_default_browser_screen_has_no_checkbox_tile():
   patch = text(ONBOARDING_PATCH)
   assert 'Make Orbit your default' in patch
-  assert 'Open links from other apps in Orbit.' in patch, 'one-line subtitle avoids the tile overlap'
+  assert 'tiles: undefined' in patch, 'multi-select tile overlaps the text in the center layout'
+  assert 'type: "SET_DEFAULT_BROWSER"' in patch
+  assert "!isDefaultBrowser && 'browser.shell.checkDefaultBrowser'|preferenceValue" in patch, \
+      'screen must be skipped when Orbit is already the default'
 
 
 @check
