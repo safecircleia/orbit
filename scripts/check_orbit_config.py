@@ -55,13 +55,34 @@ def resist_fingerprinting_untouched():
   assert pref_value('privacy.resistFingerprinting') is None
 
 
+def patch_added_file(patch_path, file_path):
+  section = text(patch_path).split(f'+++ b/{file_path}\n', 1)[1].split('\ndiff --git', 1)[0]
+  lines = [line[1:] for line in section.splitlines()[1:] if line.startswith('+')]
+  return '\n'.join(lines)
+
+
+@check
+def policies_json_valid_and_complete():
+  import json
+  body = patch_added_file(
+      'src/browser/app/distribution/policies.patch', 'browser/app/distribution/policies.json')
+  policies = json.loads(body)['policies']
+  assert policies['BlockAboutConfig'] is True
+  assert policies['Extensions']['Locked'] == ['uBlock0@raymondhill.net']
+  engines = policies['SearchEngines']
+  default = next(e for e in engines['Add'] if e['Name'] == engines['Default'])
+  assert 'kp=1' in default['URLTemplate'], 'default engine must enforce safe search'
+  assert '{searchTerms}' in default['URLTemplate']
+  assert 'FINAL_TARGET_FILES.distribution' in text('src/browser/app/distribution/policies.patch')
+
+
 if __name__ == '__main__':
   failed = 0
   for fn in CHECKS:
     try:
       fn()
       print(f'ok   {fn.__name__}')
-    except AssertionError as error:
+    except Exception as error:
       failed += 1
-      print(f'FAIL {fn.__name__}: {error}')
+      print(f'FAIL {fn.__name__}: {type(error).__name__}: {error}')
   sys.exit(1 if failed else 0)
