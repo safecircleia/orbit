@@ -23,18 +23,19 @@ def text(path):
 
 
 def pref_value(name):
+  """Raw YAML value of a pref across prefs/**/*.yaml; None if absent; fails on duplicates."""
   pattern = re.compile(r'^- name: ' + re.escape(name) + r'\n  value: (.+)$', re.M)
-  for yaml_file in (ROOT / 'prefs').rglob('*.yaml'):
-    match = pattern.search(yaml_file.read_text())
-    if match:
-      return match.group(1).strip()
-  return None
+  values = [match.group(1).strip()
+            for yaml_file in (ROOT / 'prefs').rglob('*.yaml')
+            for match in pattern.finditer(yaml_file.read_text())]
+  assert len(values) <= 1, f'{name} is defined {len(values)} times in prefs/'
+  return values[0] if values else None
 
 
 @check
 def fullscreen_warning_not_suppressed():
-  assert 'full-screen-api.warning' not in text('prefs/firefox/fullscreen.yaml'), \
-      'fullscreen warning overrides still present'
+  for name in ('full-screen-api.warning.delay', 'full-screen-api.warning.timeout'):
+    assert pref_value(name) is None, f'{name} override still present'
 
 
 @check
@@ -93,8 +94,21 @@ def onboarding_screens_and_targeting():
   for needle in ('id: "ORBIT_WELCOME"', 'https://safecircle.tech/privacy',
                  '"AW_EASY_SETUP"', '"AW_IMPORT_SETTINGS_EMBEDDED"', '"AW_THEME_PICKER"'):
     assert needle in patch, f'missing {needle}'
-  assert 'secondary_button_top' in patch, 'sign-in/backup buttons must be stripped'
-  assert 'AW_THEME_PICKER' in patch and 'targeting' in patch, 'targeting must be preserved'
+  assert 'const { secondary_button_top, ...rest } = content;' in patch, \
+      'sign-in/backup buttons must be stripped'
+  assert 'targeting: override?.targeting ?? targeting' in patch, 'targeting must be preserved'
+  assert 'id === "AW_THEME_PICKER"' in patch, 'only the theme picker drops its targeting'
+
+
+@check
+def onboarding_reused_screens_still_exist_upstream():
+  engine_file = ROOT / 'engine/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs'
+  if not engine_file.exists():
+    return 'skipped: no engine/'
+  upstream = engine_file.read_text()
+  for screen_id in ('AW_EASY_SETUP', 'AW_IMPORT_SETTINGS_EMBEDDED', 'AW_THEME_PICKER'):
+    assert f'id: "{screen_id}",' in upstream, f'{screen_id} no longer defined upstream'
+  assert 'secondary_button_top:' in upstream, 'secondary_button_top was renamed upstream'
 
 
 @check
@@ -103,8 +117,14 @@ def onboarding_default_browser_screen_has_no_checkbox_tile():
   assert 'Make Orbit your default' in patch
   assert 'tiles: undefined' in patch, 'multi-select tile overlaps the text in the center layout'
   assert 'type: "SET_DEFAULT_BROWSER"' in patch
-  assert "!isDefaultBrowser && 'browser.shell.checkDefaultBrowser'|preferenceValue" in patch, \
-      'screen must be skipped when Orbit is already the default'
+  assert '!isDefaultBrowser' in patch, 'screen must be skipped when Orbit is already the default'
+  assert "'browser.shell.checkDefaultBrowser'|preferenceValue" in patch
+
+
+@check
+def onboarding_defers_to_os_default_browser_prompt():
+  assert '!${SET_DEFAULT_OS_PROMPT_ENABLED}' in text(ONBOARDING_PATCH), \
+      'macOS/Windows show an OS prompt on first newtab; the screen must not ask twice'
 
 
 @check
@@ -135,8 +155,8 @@ if __name__ == '__main__':
   failed = 0
   for fn in CHECKS:
     try:
-      fn()
-      print(f'ok   {fn.__name__}')
+      note = fn()
+      print(f'ok   {fn.__name__}' + (f' ({note})' if note else ''))
     except Exception as error:
       failed += 1
       print(f'FAIL {fn.__name__}: {type(error).__name__}: {error}')

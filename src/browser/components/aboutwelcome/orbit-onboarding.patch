@@ -1,5 +1,5 @@
 diff --git a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
-index 853e041324..1843777676 100644
+index 853e041324..13fd71a687 100644
 --- a/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
 +++ b/browser/components/aboutwelcome/modules/AboutWelcomeDefaults.sys.mjs
 @@ -863,9 +863,87 @@ async function getAttributionContent() {
@@ -14,11 +14,11 @@ index 853e041324..1843777676 100644
 +];
 +const ORBIT_SCREEN_BACKGROUND = "var(--mr-screen-background-color)";
 +// The multi-select tile is only laid out for the split layout, so the
-+// default-browser screen uses a single button instead.
++// default-browser screen uses a single button instead. On macOS/Windows the
++// OS prompt on the first newtab asks the same question, so the screen yields.
 +const ORBIT_SCREEN_OVERRIDES = {
 +  AW_EASY_SETUP: {
-+    targeting:
-+      "!isDefaultBrowser && 'browser.shell.checkDefaultBrowser'|preferenceValue",
++    targeting: `!isDefaultBrowser && !${SET_DEFAULT_OS_PROMPT_ENABLED} && 'browser.shell.checkDefaultBrowser'|preferenceValue`,
 +    content: {
 +      title: { raw: "Make Orbit your default" },
 +      subtitle: { raw: "Open links from other apps in Orbit." },
