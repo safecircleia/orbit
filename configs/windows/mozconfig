@@ -14,11 +14,13 @@ if test "$ORBIT_CROSS_COMPILING"; then
   export CROSS_BUILD=1
   CROSS_COMPILE=1
 
+  # The MSVC version is pinned upstream (engine/build/vs/vs2026.yaml); don't hardcode it.
   if test "$SURFER_COMPAT" = "aarch64"; then
-    export WIN32_REDIST_DIR="$WINSYSROOT/VC/Redist/MSVC/14.50.35710/arm64/Microsoft.VC145.CRT"
+    ORBIT_REDIST_ARCH=arm64
   else
-    export WIN32_REDIST_DIR="$WINSYSROOT/VC/Redist/MSVC/14.50.35710/x64/Microsoft.VC145.CRT"
+    ORBIT_REDIST_ARCH=x64
   fi
+  export WIN32_REDIST_DIR="$(ls -d "$WINSYSROOT"/VC/Redist/MSVC/*/$ORBIT_REDIST_ARCH/Microsoft.VC*.CRT | tail -1)"
 fi
 
 ac_add_options --disable-maintenance-service
