@@ -413,7 +413,7 @@ jobs:
         run: |
           set -eux
           export ARCH=${{ matrix.arch }}
-          UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|desktop|latest|orbit-browser-$ARCH.AppImage.zsync"
+          UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|orbit|latest|orbit-browser-$ARCH.AppImage.zsync"
 
           # Create AppDir structure and extract tarball first
           APPDIR=build/AppDir
