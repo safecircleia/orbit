@@ -25,9 +25,6 @@
   value: false
   locked: true
 
-- name: browser.aboutwelcome.enabled
-  value: false
-
 - name: browser.contentblocking.report.show_mobile_app
   value: false
   locked: true

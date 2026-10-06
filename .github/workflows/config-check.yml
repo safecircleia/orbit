@@ -1,0 +1,19 @@
+name: Config check
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [stable, beta]
+  pull_request:
+    branches: [stable, beta]
+
+jobs:
+  config-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Orbit release config
+        run: python3 scripts/check_orbit_config.py

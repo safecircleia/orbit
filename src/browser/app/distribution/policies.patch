@@ -1,0 +1,51 @@
+diff --git a/browser/app/distribution/moz.build b/browser/app/distribution/moz.build
+index b174449a09..ddddc7ab4f 100644
+--- a/browser/app/distribution/moz.build
++++ b/browser/app/distribution/moz.build
+@@ -8,3 +8,7 @@ if CONFIG["BUILT_BY_MOZILLA"]:
+     FINAL_TARGET_FILES.distribution += [
+         "distribution.ini",
+     ]
++
++FINAL_TARGET_FILES.distribution += [
++    "policies.json",
++]
+diff --git a/browser/app/distribution/policies.json b/browser/app/distribution/policies.json
+new file mode 100644
+index 0000000000..1a3f58f8d0
+--- /dev/null
++++ b/browser/app/distribution/policies.json
+@@ -0,0 +1,22 @@
++{
++  "policies": {
++    "BlockAboutConfig": true,
++    "Extensions": {
++      "Locked": ["uBlock0@raymondhill.net"]
++    },
++    "SearchEngines": {
++      "Default": "DuckDuckGo Safe",
++      "Add": [
++        {
++          "Name": "DuckDuckGo Safe",
++          "URLTemplate": "https://duckduckgo.com/?q={searchTerms}&kp=1",
++          "Method": "GET",
++          "IconURL": "https://duckduckgo.com/favicon.ico",
++          "Alias": "ddg",
++          "Description": "DuckDuckGo with strict safe search",
++          "SuggestURLTemplate": "https://duckduckgo.com/ac/?q={searchTerms}&type=list"
++        }
++      ]
++    }
++  }
++}
+diff --git a/browser/installer/package-manifest.in b/browser/installer/package-manifest.in
+index 46725ca049..9114dbd6ab 100644
+--- a/browser/installer/package-manifest.in
++++ b/browser/installer/package-manifest.in
+@@ -458,6 +458,4 @@ bin/libfreebl_64int_3.so
+ @BINPATH@/desktop-launcher/desktop-launcher@BIN_SUFFIX@
+ #endif
+ 
+-#if defined(BUILT_BY_MOZILLA)
+ @RESPATH@/distribution/*
+-#endif
