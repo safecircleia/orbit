@@ -629,7 +629,6 @@ jobs:
             cp -a ../.github/workflows/object/windows-x64-signed-arm64/update_manifest/.  updates/
           else
             cp -a ../windows_update_manifest_x86_64/.  updates/
-            cp -a ../windows_update_manifest_arm64/.  updates/
           fi
           # macOS update manifest disabled (mac builds removed)
 
@@ -661,13 +660,10 @@ jobs:
             ./orbit-aarch64.AppImage/*
             ./orbit-aarch64.AppImage.zsync/*
             ./orbit-browser.win-x86_64.zip/*
-            ./orbit-browser.win-arm64.zip/*
             ./linux.mar/*
             ./linux-aarch64.mar/*
             ./windows.mar/*
-            ./windows-arm64.mar/*
-            ./orbit.installer.exe/*
-            ./orbit.installer-arm64.exe/*
+            ./orbit-browser.installer.exe/*
           tag_name: 'beta'
           name: 'Beta build - ${{ needs.build-data.outputs.version }} (${{ needs.build-data.outputs.build_date }} at ${{ needs.build-data.outputs.build_time }})'
           draft: false
