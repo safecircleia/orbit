@@ -69,10 +69,10 @@ if test "$ORBIT_CROSS_COMPILING"; then
   fi
 fi
 
-# Cross-language LTO needs rustc's LLVM to read clang's bitcode. Firefox 157's clang is 22.1.8 but
-# rustc 1.90 ships LLVM 20, so swgl's C++ objects are unreadable and xul.dll fails to link with
-# undefined swgl symbols. Plain thin LTO keeps C++ and Rust LTO separate.
-if test "$ORBIT_CROSS_COMPILING" && ! test "$ORBIT_DISABLE_LTO"; then
-  export MOZ_LTO=thin
-  ac_add_options --enable-lto=thin
+# Firefox 157's clang is 22.1.8 but rustc 1.90 ships LLVM 20, so clang's LTO bitcode (swgl, glean
+# C++ built by Rust build scripts) is unreadable and xul.dll fails to link with undefined symbols.
+# Neither cross nor plain thin LTO avoids it, so Windows cross builds go without LTO.
+if test "$ORBIT_CROSS_COMPILING"; then
+  unset MOZ_LTO
+  ac_add_options --disable-lto
 fi
