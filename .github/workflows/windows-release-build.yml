@@ -44,7 +44,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64, aarch64]
+        # aarch64 disabled: xul.dll fails to link (undefined swgl symbols) on Firefox 157
+        arch: [x86_64]
 
     steps:
       - name: Free Disk Space (Ubuntu)
@@ -242,6 +243,8 @@ jobs:
         env:
           SURFER_COMPAT: ${{ matrix.arch }}
           ORBIT_RELEASE_BRANCH: ${{ inputs.release-branch }}
+          # clang 22 crashes in pgo-instr-use on the step 2 profile ("profile may be stale")
+          ORBIT_GA_DISABLE_PGO: true
         run: |
           set -x
           dos2unix configs/windows/mozconfig
