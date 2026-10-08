@@ -586,7 +586,7 @@ jobs:
           git push
 
   release:
-    if: ${{ (inputs.create_release || inputs.update_branch == 'beta') && (needs.sign-windows.result == 'success' || needs.sign-windows.result == 'skipped') }}
+    if: ${{ !failure() && !cancelled() && (inputs.create_release || inputs.update_branch == 'beta') && (needs.sign-windows.result == 'success' || needs.sign-windows.result == 'skipped') }}
     permissions: write-all
     name: Release
     needs: [build-data, linux, windows-step-3, check-release, appimage, source, sign-windows]
