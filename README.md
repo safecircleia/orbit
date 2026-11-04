@@ -18,35 +18,35 @@ Orbit is ideal for:
 
 ### Getting Started
 
-**1. Clone the repository:**
+Orbit is a Firefox fork built with [Surfer](https://github.com/zen-browser/surfer). You need Node.js (see `.nvmrc`), Python (see `.python-version`) and Rust (see `.rust-toolchain`).
+
 ```bash
 git clone https://github.com/safecircleia/orbit.git
-```
-
-**2. Install dependencies:**
-For Node.js-related dependencies:
-```bash
+cd orbit
 npm install
+npm run init     # download Firefox source, import Orbit's changes, bootstrap
+npm run build    # build Orbit
+npm start        # run it
 ```
-Refer to the `package.json` file for a full list of dependencies.
 
-**3. Build and run:**
-Orbit supports multi-platform builds. Example for macOS:
-```bash
-# Use the included mozconfig for platform configuration
-npm run build
-```
-Check `configs/macos/mozconfig` for configuration details.
+Platform-specific build settings live in `configs/` (for example `configs/macos/mozconfig`).
 
 ### Development
 
-The codebase includes CSS, JS, and other web technology components for browser features and theming. Community contributions are welcome—please open issues or pull requests to suggest improvements, report bugs, or add features.
+- `npm run lint` / `npm run lint:fix`: ESLint and Prettier
+- `npm test`: run the test suite
+- `npm run export`: export your changes in `engine/` back into `src/`
+
+Contributions are welcome. Please open an issue or pull request to report bugs or suggest improvements.
+
+### Security
+
+To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
 ### License
 
-This project is open source. Licensing terms are defined in the repository’s LICENSE.
-
+Orbit is licensed under the [Mozilla Public License 2.0](LICENSE). Bundled third-party components keep their own licenses.
 
 ### Learn More
 
-For more information and updates, visit the [Orbit repository](https://github.com/safecircleia/orbit).s.
+Downloads and releases: https://github.com/safecircleia/orbit/releases
